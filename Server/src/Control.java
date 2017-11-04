@@ -63,7 +63,13 @@ public class Control {
 	 */
 	private void processArduinoContent() {
 		pushButton = ArduinoCommunication.getPushButtonState();
-		indoorTemp = ArduinoCommunication.getTemperature();
+		
+		int temp = ArduinoCommunication.getTemperature();
+		if (temp != indoorTemp){
+			GUIUpdate.setIndoorTemp(temp);
+			indoorTemp = temp;
+		}
+		//indoorTemp = ArduinoCommunication.getTemperature();
 		
 		// Get individual buttons from Object containing the four button states
 		IRButtons IRButtonStates = ArduinoCommunication.getIRButtonState();
@@ -103,6 +109,7 @@ public class Control {
 	 * Return: Void
 	 */
 	private void updateGUI() {
+		//TODO: Put all of these in respective functions (ie. when we get info, just update then and not here). 
 		GUIUpdate.setIndoorTemp(indoorTemp);
 		GUIUpdate.setOutdoorTemp(outdoorTemp);
 		GUIUpdate.setNews(news);
