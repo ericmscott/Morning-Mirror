@@ -1,6 +1,6 @@
 
 public class ArduinoCommunication {
-
+	
 	/**
 	 * Description:
 	 * Function which gets Data from Arduino
@@ -78,5 +78,4 @@ public class ArduinoCommunication {
 	public void testArduino(){
 		//TODO
 	}
-	
 }
