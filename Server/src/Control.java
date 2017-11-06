@@ -47,9 +47,23 @@ public class Control {
 	 * Return: Void
 	 */
 	private void refreshInternetContent() {
-		outdoorTemp = InternetCommunication.getWeather();
-		news = InternetCommunication.getNews();
-		bus = InternetCommunication.getBus(bus.getBusNumber());
+		float temp = InternetCommunication.getWeather();
+		if (temp != outdoorTemp){
+			GUIUpdate.setOutdoorTemp(temp);
+			outdoorTemp = temp;
+		}
+		
+		News temp2 = InternetCommunication.getNews();
+		if (temp2 != news){ //TODO: Fix this (add isEqual to news or whatever)
+			GUIUpdate.setNews(temp2);
+			news = temp2;
+		}
+
+		Bus temp3 = InternetCommunication.getBus(bus.getBusNumber());
+		if (temp3 != bus){ //TODO: Fix this (add isEqual to news or whatever)
+			GUIUpdate.setBusData(temp3);
+			bus = temp3;
+		}
 
 	}
 	
@@ -97,27 +111,14 @@ public class Control {
 		currentLocation = AndroidCommunication.getCurrentLocation();
 		destination = AndroidCommunication.getDestination();
 		destinationTime = AndroidCommunication.getDestinationTime();
-		// TODO: Actual Logic
-	}
-	
-	/**
-	 * Description:
-	 * Function which updates the GUI with new data
-	 * 
-	 * Parameters: None
-	 * 
-	 * Return: Void
-	 */
-	private void updateGUI() {
-		//TODO: Put all of these in respective functions (ie. when we get info, just update then and not here). 
-		GUIUpdate.setIndoorTemp(indoorTemp);
-		GUIUpdate.setOutdoorTemp(outdoorTemp);
-		GUIUpdate.setNews(news);
-		GUIUpdate.setBusData(bus);
+		
+		
+
+		// TODO: Actual logic For these updates
 		GUIUpdate.setTimeToLeave(timeToLeave);
 		GUIUpdate.setTime(time);
 		GUIUpdate.setSleepQuality(sleepQuality);
-		//TODO: Actual Logic
+
 	}
 	
 	/**
@@ -158,13 +159,11 @@ public class Control {
 		Thread t1 = new Thread();
 		Thread t2 = new Thread();
 		Thread t3 = new Thread();
-		Thread t4 = new Thread();
 
 		while(true){
 			instance.refreshInternetContent();
 			instance.processArduinoContent();
 			instance.processAndroidData();
-			instance.updateGUI();
 		}
 	}
 

@@ -12,7 +12,7 @@ public class ArduinoCommunication {
 	 */
 	public boolean getPushButtonState(){
 		//TODO
-		return (Boolean) null;
+		return false;
 	}
 	
 	/**

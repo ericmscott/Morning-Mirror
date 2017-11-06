@@ -12,7 +12,7 @@ public class InternetCommunication {
 	 */
 	public float getWeather(){
 		//TODO
-		return (Float) null;
+		return -1;
 	}
 	
 	/**
