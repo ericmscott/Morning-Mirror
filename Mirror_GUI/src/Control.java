@@ -1,9 +1,9 @@
 //TODO
-import Server.News.*;
+//import Server.News.*;
 //TODO
-import Server.Time.*;
+//import Server.Time;
 //TODO
-import Server.Bus.*;
+//import Server.Bus.*;
 
 public class Control {
 	private News news;
@@ -13,7 +13,8 @@ public class Control {
 	private Time timeToLeave;
 	private int sleepQuality;
 	private Bus bus;
-
+	
+	GUI gui= new GUI();
 	//TODO
 	//double check public or private
 	/**
@@ -27,6 +28,7 @@ public class Control {
 	public void updateNews(News news) {
 		//TODO
 		this.news=news;
+		gui.updateNewsLabel(news);
 	}
 	/**
 	 * Description:
@@ -38,6 +40,7 @@ public class Control {
 	 */
 	public void updateindoorTemp(float temp) {
 		indoorTemp=temp;
+		gui.updateIndoorTempLabel(temp);
 	}
 	/**
 	 * Description:
@@ -49,6 +52,7 @@ public class Control {
 	 */
 	public void updateOutdoorTemp(float temp) {
 		outdoorTemp= temp;
+		gui.updateOutdoorTempLabel(temp);
 	}
 	/**
 	 * Description:
@@ -60,7 +64,7 @@ public class Control {
 	 */
 	public void updateTime(Time time) {
 		this.time=time;
-		updateTimeLabel(time);
+		gui.updateTimeLabel(time);
 	}
 	/**
 	 * Description:
@@ -72,6 +76,7 @@ public class Control {
 	 */
 	public void updateSleepQuality(int sleepQuality) {
 		this.sleepQuality=sleepQuality;
+		gui.updateSleepQualityLabel(sleepQuality);
 	}
 	/**
 	 * Description:
@@ -83,6 +88,7 @@ public class Control {
 	 */
 	public void updateBusData(Bus bus) {
 		this.bus=bus;
+		gui.updateBusLabel(bus);
 	}
 	/**
 	 * Description:
@@ -94,6 +100,21 @@ public class Control {
 	 */
 	public void updateTimeToLeave(Time timeToLeave) {
 		this.timeToLeave=timeToLeave;
+		gui.updateTimeToLeaveLabel(timeToLeave);
+	}
+	/**
+	 * Description:
+	 * Function which returns the current time.
+	 * 
+	 * Parameters: Void
+	 * 
+	 * Return: current time
+	 */
+	public Time getTime() {
+		return time;
+	}
+	public News getNews() {
+		return news;
 	}
 	/**
 	 * Description:
@@ -103,7 +124,7 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public void testGUI(void) {
+	public void testGUI() {
 		//TODO
 	}
 }

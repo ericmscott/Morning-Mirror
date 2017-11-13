@@ -11,14 +11,19 @@ public class Time {
 	public Time(int second, int minute, int hour, int day, int month, int year){
 		this.second = second;
 		this.minute = minute;
-		this.hour = hour;
+		this.setHour(hour);
 		this.day = day;
 		this.month = month;
 		this.year = year;
 	}
 	public String toString(){
-		String string = new String(month+"/"+day+"/"+year+"  " + hour + ":" + minute + ":" + second);
+		String string = new String(month+"/"+day+"/"+year+"  " + getHour() + ":" + minute + ":" + second);
 		return string;
 	}
-	
+	public int getHour() {
+		return hour;
+	}
+	public void setHour(int hour) {
+		this.hour = hour;
+	}
 }

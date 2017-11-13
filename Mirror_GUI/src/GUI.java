@@ -2,18 +2,21 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import net.miginfocom.swing.MigLayout;
 //TODO
 // fix imports
-import Server.News.*;
+//import Server.News.*;
 //TODO
 //fix imports
-import Server.Time.*;
+//import Server.Time.*;
 //TODO
 //fix imports
-import Server.Bus.*;
+//import Server.Bus.*;
 //TODO
 //fix imports
-import miglayout-4.0-swing.jar:
+
+
 public class GUI {
 //TODO
 //Check variable type and private or public
@@ -40,6 +43,20 @@ public class GUI {
 	private int heightGap=1;
 	private int widthGap=1;
 	
+	public GUI() {
+		this.panel=new JPanel();
+		this.frame=new JFrame();
+		this.titleLabel=new JLabel();
+		this.newsLabel=new JLabel();
+		this.indoorTempLabel=new JLabel();
+		this.outdoorTempLabel=new JLabel();
+		this.timeLabel=new JLabel();
+		this.timeToLeaveLabel=new JLabel();
+		this.sleepQualityLabel=new JLabel();
+		this.busLabel=new JLabel();
+	}
+	
+	
 	
 	
 //TODO
@@ -53,7 +70,7 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void updateNewsLabel(News news) {
-		newsLabel.setText(news);
+		newsLabel.setText(news.toString());
 	}
 	/**
 	 * Description:
@@ -86,7 +103,7 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void updateTimeLabel(Time time) {
-		timeLabel.setText(time);
+		timeLabel.setText(time.toString());
 	}
 	/**
 	 * Description:
@@ -97,7 +114,7 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void updateTimeToLeaveLabel(Time timeToLeave) {
-		timeToLeaveLabel.setText(timeToLeave);
+		timeToLeaveLabel.setText(timeToLeave.toString());
 	}
 	/**
 	 * Description:
@@ -119,10 +136,9 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void updateBusLabel(Bus bus) {
-		busLabel.setText(bus);
+		busLabel.setText(bus.toString());
 	}
-	// Build GUI
-	//TODO
+	// Build GUI	//TODO
 	/**
 	 * Description:
 	 * Function which calls all functions required to build the GUI.
