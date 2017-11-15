@@ -5,5 +5,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="C:/Users/Christopher Morency/Downloads/json-20171018.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Christopher Morency/Downloads/json-20171018-javadoc.jar"/>
+	<classpathentry kind="lib" path="easymock-3.5.jar"/>
+	<classpathentry kind="lib" path="easymock-3.5-javadoc.jar"/>
+	<classpathentry kind="lib" path="objenesis-2.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

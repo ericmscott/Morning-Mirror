@@ -46,22 +46,22 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	private void refreshInternetContent() {
+	public void refreshInternetContent() {
 		float temp = InternetCommunication.getWeather();
 		if (temp != outdoorTemp){
-			GUIUpdate.setOutdoorTemp(temp);
+			//GUIUpdate.setOutdoorTemp(temp);
 			outdoorTemp = temp;
 		}
 		
 		News temp2 = InternetCommunication.getNews();
-		if (temp2 != news){ //TODO: Fix this (add isEqual to news or whatever)
-			GUIUpdate.setNews(temp2);
+		if ( news != null && temp2 != news){ //TODO: Fix this (add isEqual to news or whatever)
+			//GUIUpdate.setNews(temp2);
 			news = temp2;
 		}
 
-		Bus temp3 = InternetCommunication.getBus(bus.getBusNumber());
-		if (temp3 != bus){ //TODO: Fix this (add isEqual to news or whatever)
-			GUIUpdate.setBusData(temp3);
+		Bus temp3 = InternetCommunication.getBus(7/*bus.getBusNumber()*/);
+		if (bus != null && temp3 != bus){ //TODO: Fix this (add isEqual to news or whatever)
+			//GUIUpdate.setBusData(temp3);
 			bus = temp3;
 		}
 
@@ -104,7 +104,7 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	private void processAndroidData() {
+	public void processAndroidData() {
 		sleepData = AndroidCommunication.getSleepData();
 		wakeUp = AndroidCommunication.getWakeUp();
 		bus = AndroidCommunication.getBusData();
@@ -113,11 +113,12 @@ public class Control {
 		destinationTime = AndroidCommunication.getDestinationTime();
 		
 		
-
+		sleepQuality = 0;
+		timeToLeave = new Time(2, 3, 1, 3, 2, 1);
 		// TODO: Actual logic For these updates
-		GUIUpdate.setTimeToLeave(timeToLeave);
-		GUIUpdate.setTime(time);
-		GUIUpdate.setSleepQuality(sleepQuality);
+		//GUIUpdate.setTimeToLeave(timeToLeave);
+		//GUIUpdate.setTime(time);
+		//GUIUpdate.setSleepQuality(sleepQuality);
 
 	}
 	

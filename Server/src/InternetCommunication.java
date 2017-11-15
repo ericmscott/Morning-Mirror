@@ -3,7 +3,7 @@ import org.json.*;
 public class InternetCommunication {
 	
 	
-	
+	/*
 	public void json(){
 			
 		      JSONParser parser = new JSONParser();
@@ -39,7 +39,7 @@ public class InternetCommunication {
 		      }
 		}
 
-	 
+	 /*
 	 
 	 
 	 /**
