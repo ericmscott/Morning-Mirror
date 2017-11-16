@@ -79,14 +79,52 @@ public class ControlTest {
 	public void testUpdateIndoorTemp() {
 		
 		Control test = new Control();
-		float newTemp= 2.0;
+		float newTemp= 2.0f;
 		
-		test.updateNews(newNews);
-		Assert.assertSame(Headline,test.getNews().getHeadline());
-		Assert.assertSame(Content,test.getNews().getContent());
-		System.out.println("Testing updatenews");
-		
+		test.updateindoorTemp(newTemp);
+		Assert.assertEquals(newTemp,test.getIndoorTemp(),0.0f);
+		System.out.println("Testing updateIndoorTemp");
 		
 		
+		
+	}
+	@Test
+	public void testUpdateOutdoorTemp() {
+		
+		Control test = new Control();
+		float newTemp= 2.0f;
+		
+		test.updateOutdoorTemp(newTemp);
+		Assert.assertEquals(newTemp,test.getOutdoorTemp(),0.0f);
+		System.out.println("Testing updateOutdoorTemp");
+		
+		
+		
+	}
+	@Test
+	public void testUpdateSleepQuality() {
+		
+		Control test = new Control();
+		float newSleepQuality= 3;
+		
+		test.updateOutdoorTemp(newSleepQuality);
+		Assert.assertEquals(newSleepQuality,test.getSleepQuality());
+		System.out.println("Testing updateSleepQuality");
+		
+		
+		
+	}
+	@Test
+	public void testUpdateBusData() {
+		
+		Control test = new Control();
+		Time newBus =new Time(0,0,1,13,11,2017);
+		final String expected="11/13/2017  1:0:0";
+		//System.out.println("Testing updateTime.");
+		
+		test.updateTime(newTime);
+		Assert.assertEquals(expected,test.getTime().toString());
+		
+			
 	}
 }

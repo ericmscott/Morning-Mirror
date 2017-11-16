@@ -116,6 +116,17 @@ public class Control {
 	public News getNews() {
 		return news;
 	}
+	public float getIndoorTemp() {
+		return indoorTemp;
+	}
+	public float getOutdoorTemp() {
+		
+		return outdoorTemp;
+	}
+	public Object getSleepQuality() {
+
+		return sleepQuality;
+}
 	/**
 	 * Description:
 	 * Function which test the GUI to make sure everything is displayed correctly.
@@ -127,5 +138,6 @@ public class Control {
 	public void testGUI() {
 		//TODO
 	}
+	
 }
 

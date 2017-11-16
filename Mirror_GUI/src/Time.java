@@ -11,7 +11,7 @@ public class Time {
 	public Time(int second, int minute, int hour, int day, int month, int year){
 		this.second = second;
 		this.minute = minute;
-		this.setHour(hour);
+		this.hour= hour;
 		this.day = day;
 		this.month = month;
 		this.year = year;
