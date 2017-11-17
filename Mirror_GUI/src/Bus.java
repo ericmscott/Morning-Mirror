@@ -18,6 +18,15 @@ public class Bus {
 	public int getBusNumber(){
 		return busNumber;
 	}
+	public int getNextBus1(){
+		return nextBus1;
+	}
+	public int getNextBus2(){
+		return nextBus2;
+	}
+	public int getNextBus3(){
+		return nextBus3;
+	}
 	
 	public String toString(){
 		String string = new String("Bus Number: " + busNumber);

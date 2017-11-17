@@ -118,12 +118,39 @@ public class ControlTest {
 	public void testUpdateBusData() {
 		
 		Control test = new Control();
-		Time newBus =new Time(0,0,1,13,11,2017);
-		final String expected="11/13/2017  1:0:0";
+		Bus newBus = new Bus(85);
+		newBus.setNextBus(5, -1, -1);
+		final String expected="Bus Number: 85 Next Bus 1: 5";
 		//System.out.println("Testing updateTime.");
 		
-		test.updateTime(newTime);
-		Assert.assertEquals(expected,test.getTime().toString());
+		test.updateBusData(newBus);
+		Assert.assertSame(expected,test.getBus().toString());
+		
+			
+	}
+	@Test
+	public void testUpdateBusDataFail() {
+		
+		Control test = new Control();
+		Bus newBus = new Bus(85);
+		newBus.setNextBus(-5, -1, -1);
+		//final String expected="Bus Number: 85 Next Bus 1: 5";
+		//System.out.println("Testing updateTime.");
+		
+		test.updateBusData(newBus);
+		Assert.assertFalse(test.getBus().getNextBus1()>0);
+		
+	}
+	@Test
+	public void testUpdateTimeToLeave() {
+		
+		Control test = new Control();
+		Time newTimeToLeave =new Time(0,0,1,13,11,2017);
+		final String expected="11/13/2017  1:0:0";
+		//;System.out.println("Testing updateTimeToLeave.");
+		
+		test.updateTimeToLeave(newTimeToLeave);
+		Assert.assertEquals(expected,test.getTimeToLeave().toString());
 		
 			
 	}

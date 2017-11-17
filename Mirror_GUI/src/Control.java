@@ -126,7 +126,14 @@ public class Control {
 	public Object getSleepQuality() {
 
 		return sleepQuality;
-}
+	}
+	public Bus getBus() {
+		return bus;
+	}
+	public Time getTimeToLeave() {
+		
+		return timeToLeave;
+	}
 	/**
 	 * Description:
 	 * Function which test the GUI to make sure everything is displayed correctly.
@@ -138,6 +145,8 @@ public class Control {
 	public void testGUI() {
 		//TODO
 	}
+	
+	
 	
 }
 

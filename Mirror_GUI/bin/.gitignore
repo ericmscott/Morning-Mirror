@@ -1,5 +1,8 @@
-/Time2.class
-/Time.class
-/News.class
 /Bus.class
-/Snippet.class
+/Control.class
+/ControlTest.class
+/GUI.class
+/News.class
+/ServerCommunication.class
+/Time.class
+/miglayout-4.0-swing.jar
