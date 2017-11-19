@@ -25,10 +25,14 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public void updateNews(News news) {
+	public boolean updateNews(News news) {
 		//TODO
+		if (news.getHeadline()=="" || news.getContent()==""){
+			return false;
+		}
 		this.news=news;
 		gui.updateNewsLabel(news);
+		return true;
 	}
 	/**
 	 * Description:
@@ -38,9 +42,14 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public void updateindoorTemp(float temp) {
+	public boolean updateindoorTemp(float temp) {
+		if (temp>40f||temp<0f){
+			return false;
+		}
+		
 		indoorTemp=temp;
 		gui.updateIndoorTempLabel(temp);
+		return true;
 	}
 	/**
 	 * Description:
@@ -50,9 +59,14 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public void updateOutdoorTemp(float temp) {
+	public boolean updateOutdoorTemp(float temp) {
+		if (temp>40f||temp<-40f){
+			return false;
+		}
+		
 		outdoorTemp= temp;
 		gui.updateOutdoorTempLabel(temp);
+		return true;
 	}
 	/**
 	 * Description:
@@ -62,9 +76,13 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public void updateTime(Time time) {
+	public boolean updateTime(Time time) {
+		if (time.getHour()>23||time.getHour()<0){
+			return false;
+		}
 		this.time=time;
 		gui.updateTimeLabel(time);
+		return true;
 	}
 	/**
 	 * Description:
@@ -74,9 +92,13 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public void updateSleepQuality(int sleepQuality) {
+	public boolean updateSleepQuality(int sleepQuality) {
+		if (sleepQuality<0||sleepQuality>10){
+			return false;
+		}
 		this.sleepQuality=sleepQuality;
 		gui.updateSleepQualityLabel(sleepQuality);
+		return true;
 	}
 	/**
 	 * Description:
@@ -86,9 +108,13 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public void updateBusData(Bus bus) {
+	public boolean updateBusData(Bus bus) {
+		if(bus.getBusNumber()<1||bus.getNextBus1()<-1||bus.getNextBus2()<-1||bus.getNextBus3()<-1){
+			return false;
+		}
 		this.bus=bus;
 		gui.updateBusLabel(bus);
+		return true;
 	}
 	/**
 	 * Description:
@@ -98,9 +124,13 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public void updateTimeToLeave(Time timeToLeave) {
+	public boolean updateTimeToLeave(Time timeToLeave) {
+		if (timeToLeave.getHour()>23||timeToLeave.getHour()<0){
+			return false;
+		}
 		this.timeToLeave=timeToLeave;
 		gui.updateTimeToLeaveLabel(timeToLeave);
+		return true;
 	}
 	/**
 	 * Description:

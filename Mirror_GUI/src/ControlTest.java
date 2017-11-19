@@ -32,9 +32,9 @@ public class ControlTest {
 		Time newtime=new Time(0,0,26,13,11,2017);
 		
 		
-		test.updateTime(newtime);
-		Assert.assertFalse(test.getTime().getHour()<24);
-		System.out.println("Testing updateTime with wrong hour.");
+		
+		Assert.assertFalse(test.updateTime(newtime));
+		//System.out.println("Testing updateTime with wrong hour.");
 		
 		
 		
@@ -51,7 +51,7 @@ public class ControlTest {
 		test.updateNews(newNews);
 		Assert.assertSame(Headline,test.getNews().getHeadline());
 		Assert.assertSame(Content,test.getNews().getContent());
-		System.out.println("Testing updatenews");
+		//System.out.println("Testing updatenews");
 		
 		
 		
@@ -61,16 +61,13 @@ public class ControlTest {
 		
 		Control test = new Control();
 
+		News newNews= new News("","");
 		
-		final String newNews = "Today’s News";
-		final String Headline="Today's News";
-		final String Content="Today is going to be great";
 		
-		test.updateNews(newNews);
-		Assert.assertNotSame(Content,test.getNews().getContent());
-		System.out.println("Testing updatenews");
+		Assert.assertFalse(test.updateNews(newNews));
+		//System.out.println("Testing updatenews");
 		
-		//fail("news did not update");
+		
 		
 		
 		
@@ -83,7 +80,23 @@ public class ControlTest {
 		
 		test.updateindoorTemp(newTemp);
 		Assert.assertEquals(newTemp,test.getIndoorTemp(),0.0f);
-		System.out.println("Testing updateIndoorTemp");
+		//System.out.println("Testing updateIndoorTemp");
+		
+		
+		
+	}
+	@Test
+	public void testUpdateIndoorTempExtremeTemp() {
+		
+		Control test = new Control();
+		float newTemp= 45.0f;
+		
+		
+		Assert.assertFalse(test.updateindoorTemp(newTemp));
+		
+		
+		
+		//System.out.println("Testing updateIndoorTemp with extreme temp");
 		
 		
 		
@@ -102,14 +115,50 @@ public class ControlTest {
 		
 	}
 	@Test
+	public void testUpdateOutdoorTempExtremeTemp() {
+		
+		
+			
+			Control test = new Control();
+			float newTemp= 45.0f;
+			
+			
+			Assert.assertFalse(test.updateindoorTemp(newTemp));
+			
+			
+			
+			//System.out.println("Testing updateIndoorTemp with extreme temp");
+			
+			
+			
+		
+		
+	}
+	@Test
 	public void testUpdateSleepQuality() {
 		
 		Control test = new Control();
-		float newSleepQuality= 3;
+		int newSleepQuality= 3;
 		
-		test.updateOutdoorTemp(newSleepQuality);
+		test.updateSleepQuality(newSleepQuality);
 		Assert.assertEquals(newSleepQuality,test.getSleepQuality());
-		System.out.println("Testing updateSleepQuality");
+		//System.out.println("Testing updateSleepQuality");
+		
+		
+		
+	}
+	@Test
+	public void testUpdatesleepQualityOutOfRange() {
+		
+		Control test = new Control();
+		int newSleepQuality= 11;
+		
+		
+		Assert.assertFalse(test.updateSleepQuality(newSleepQuality));
+		
+		
+		
+		//System.out.println("Testing updateSleep Quality with int out of range");
 		
 		
 		
@@ -120,11 +169,11 @@ public class ControlTest {
 		Control test = new Control();
 		Bus newBus = new Bus(85);
 		newBus.setNextBus(5, -1, -1);
-		final String expected="Bus Number: 85 Next Bus 1: 5";
-		//System.out.println("Testing updateTime.");
+		//final String expected="Bus Number: 85 Next Bus 1: 5";
 		
-		test.updateBusData(newBus);
-		Assert.assertSame(expected,test.getBus().toString());
+		
+		
+		Assert.assertTrue(test.updateBusData(newBus));
 		
 			
 	}
@@ -134,11 +183,9 @@ public class ControlTest {
 		Control test = new Control();
 		Bus newBus = new Bus(85);
 		newBus.setNextBus(-5, -1, -1);
-		//final String expected="Bus Number: 85 Next Bus 1: 5";
-		//System.out.println("Testing updateTime.");
 		
-		test.updateBusData(newBus);
-		Assert.assertFalse(test.getBus().getNextBus1()>0);
+		
+		Assert.assertFalse(test.updateBusData(newBus));
 		
 	}
 	@Test
@@ -147,11 +194,25 @@ public class ControlTest {
 		Control test = new Control();
 		Time newTimeToLeave =new Time(0,0,1,13,11,2017);
 		final String expected="11/13/2017  1:0:0";
-		//;System.out.println("Testing updateTimeToLeave.");
+		
 		
 		test.updateTimeToLeave(newTimeToLeave);
 		Assert.assertEquals(expected,test.getTimeToLeave().toString());
 		
 			
+	}
+	@Test
+	public void testUpdateTimeToLeaveWrongHour() {
+		
+		Control test = new Control();
+		Time newtime=new Time(0,0,26,13,11,2017);
+		
+		
+		
+		Assert.assertFalse(test.updateTimeToLeave(newtime));
+		//System.out.println("Testing updateTimeToLeave with wrong hour.");
+		
+		
+		
 	}
 }

@@ -46,14 +46,15 @@ public class GUI {
 	public GUI() {
 		this.panel=new JPanel();
 		this.frame=new JFrame();
-		this.titleLabel=new JLabel();
-		this.newsLabel=new JLabel();
-		this.indoorTempLabel=new JLabel();
-		this.outdoorTempLabel=new JLabel();
-		this.timeLabel=new JLabel();
-		this.timeToLeaveLabel=new JLabel();
-		this.sleepQualityLabel=new JLabel();
-		this.busLabel=new JLabel();
+		this.titleLabel=new JLabel("Morning Mirror");
+		this.newsLabel=new JLabel("MONTREAL — It would have been a fine time for an old-fashioned bag skate, but Montreal Canadiens coach Claude Julien didn't have that option even if that was what he wanted."
++"After closing a six-game homestand with what the coach called an embarrassing 5-4 loss to lowly Arizona followed by a 6-0 thrashing from the rival Toronto Maple Leafs, the old-school reaction would be to hold a punishing, no-sticks skate to drive home the message that such performances are unacceptable.");
+		this.indoorTempLabel=new JLabel("indoor temp");
+		this.outdoorTempLabel=new JLabel("outdoor temp");
+		this.timeLabel=new JLabel("time");
+		this.timeToLeaveLabel=new JLabel("time to leave");
+		this.sleepQualityLabel=new JLabel("Sleep Quality");
+		this.busLabel=new JLabel("bus");
 	}
 	
 	
@@ -148,7 +149,9 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void buildGUI() {
-		
+	 GUI MirrorGUI = new GUI();
+	 MirrorGUI.makeLayout();
+	 
 	}
 	/**
 	 * Description:
@@ -160,18 +163,36 @@ public class GUI {
 	 */
 	public void makeLayout() {
 		panel= new JPanel(new MigLayout());
+		JFrame window = new JFrame();
+		window.setSize(1000, 100);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    Container cp = window.getContentPane();
+	    cp.setLayout(new MigLayout(""));
+	    
+		cp.add(titleLabel,"north");
+		cp.add(timeLabel);
 		
-		panel.add(titleLabel,"north");
-		panel.add(timeLabel);
 		//TODO 
 		//fix so it reads variables 
-		panel.add(newsLabel,"span newsHeight newsWidth");
-		panel.add(indoorTempLabel,"wrap");
-		panel.add(timeToLeaveLabel);
-		panel.add(outdoorTempLabel,"wrap");
-		panel.add(busLabel);
-		panel.add(sleepQualityLabel);
+		cp.add(newsLabel,"");
+		cp.add(indoorTempLabel,"wrap");
+		cp.add(timeToLeaveLabel);
+		cp.add(outdoorTempLabel,"wrap");
+		cp.add(busLabel);
+		cp.add(sleepQualityLabel);
+		window.pack();
+	    window.setVisible(true);
 		
 		
+	}
+	public static void main(String[] args)
+	{
+		//JFrame window = new JFrame();
+		GUI MirrorGUI = new GUI();
+		//MirrorGUI.updateSleepQualityLabel(5);
+		MirrorGUI.makeLayout();
+		//window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    //Container cp = window.getContentPane();
+	    
 	}
 }
