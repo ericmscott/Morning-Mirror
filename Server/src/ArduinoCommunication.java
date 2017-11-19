@@ -37,10 +37,12 @@ public class ArduinoCommunication {
 	 * 
 	 * Return: 
 	 * int: current temperature as measured by Arduino
+	 * @throws InterruptedException 
+	 * @throws NumberFormatException 
 	 */
-	public int getTemperature(){
-		//TODO
-		return (Integer) null;
+	public String getTemperature() throws NumberFormatException, InterruptedException{
+		new SerialReaderWriter();
+		return SerialReaderWriter.request("2");
 	}
 	
 	/**

@@ -74,12 +74,16 @@ public class Control {
 	 * Parameters: None
 	 * 
 	 * Return: Void
+	 * @throws InterruptedException 
+	 * @throws NumberFormatException 
 	 */
-	private void processArduinoContent() {
-		pushButton = ArduinoCommunication.getPushButtonState();
+	private void processArduinoContent() throws NumberFormatException, InterruptedException {
+		//pushButton = ArduinoCommunication.getPushButtonState();
 		
-		int temp = ArduinoCommunication.getTemperature();
-		if (temp != indoorTemp){
+		String temp = ArduinoCommunication.getTemperature();
+		System.out.println(temp);
+		Thread.sleep(5000);
+		/*if (temp != indoorTemp){
 			GUIUpdate.setIndoorTemp(temp);
 			indoorTemp = temp;
 		}
@@ -93,7 +97,7 @@ public class Control {
 		IR_Button4 = IRButtonStates.getIRButton4();
 		
 		// TODO: Actual Logic
-
+		*/
 	}
 	
 	/**
@@ -149,22 +153,22 @@ public class Control {
 		AndroidCommunication.testAndroid();
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NumberFormatException, InterruptedException {
 		Control instance = getInstance();
-		instance.AndroidCommunication = new AndroidCommunication();
+		//instance.AndroidCommunication = new AndroidCommunication();
 		instance.ArduinoCommunication = new ArduinoCommunication();
-		instance.InternetCommunication = new InternetCommunication();
-		instance.GUIUpdate = new GUIUpdate();
-
+		//instance.InternetCommunication = new InternetCommunication();
+		//instance.GUIUpdate = new GUIUpdate();
+		/*
 		//TODO: Thread stuff
 		Thread t1 = new Thread();
 		Thread t2 = new Thread();
 		Thread t3 = new Thread();
-
+		*/
 		while(true){
-			instance.refreshInternetContent();
+			//instance.refreshInternetContent();
 			instance.processArduinoContent();
-			instance.processAndroidData();
+			//instance.processAndroidData();
 		}
 	}
 
