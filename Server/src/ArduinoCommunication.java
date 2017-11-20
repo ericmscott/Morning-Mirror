@@ -1,6 +1,6 @@
 
 public class ArduinoCommunication {
-	
+	SerialConnection s = new SerialConnection();
 	/**
 	 * Description:
 	 * Function which gets Data from Arduino
@@ -9,10 +9,15 @@ public class ArduinoCommunication {
 	 * 
 	 * Return: 
 	 * boolean: Data whether pushButton is set or not
+	 * @throws InterruptedException 
 	 */
-	public boolean getPushButtonState(){
+	public String getPushButtonState() throws InterruptedException{
 		//TODO
-		return false;
+		s.setRequest("4");
+		while(!s.checkIfReceived()){
+			Thread.sleep(50);
+		}
+		return s.getResponse();
 	}
 	
 	/**
@@ -23,10 +28,15 @@ public class ArduinoCommunication {
 	 * 
 	 * Return: 
 	 * IRButtons: holds state of IR buttons
+	 * @throws InterruptedException 
 	 */
-	public IRButtons getIRButtonState(){
+	public String getIRButtonState() throws InterruptedException{
 		//TODO
-		return null;
+		s.setRequest("5");
+		while(!s.checkIfReceived()){
+			Thread.sleep(50);
+		}
+		return s.getResponse();
 	}
 	
 	/**
@@ -41,8 +51,11 @@ public class ArduinoCommunication {
 	 * @throws NumberFormatException 
 	 */
 	public String getTemperature() throws NumberFormatException, InterruptedException{
-		new SerialReaderWriter();
-		return SerialReaderWriter.request("2");
+		s.setRequest("2");
+		while(!s.checkIfReceived()){
+			Thread.sleep(50);
+		}
+		return s.getResponse();
 	}
 	
 	/**
@@ -52,9 +65,15 @@ public class ArduinoCommunication {
 	 * Parameters: Void
 	 * 
 	 * Return: Void
+	 * @return 
+	 * @throws InterruptedException 
 	 */
-	public void toggleBuzzer(){
-		//TODO
+	public String toggleBuzzer() throws InterruptedException{
+		s.setRequest("3");
+		while(!s.checkIfReceived()){
+			Thread.sleep(50);
+		}
+		return s.getResponse();
 	}
 	
 	/**
