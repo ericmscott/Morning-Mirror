@@ -1,7 +1,8 @@
 
 int ledPin = 13;
 int reading = 0;
-
+int pass = 0;
+int totalTests = 3;
 class Sensor{
   public:
     int irPin = 0;
@@ -149,24 +150,35 @@ class IRTest{
       boolean retVal = control->getIR();
       if(retVal == true){
           Serial.print("method: testGetIR_on(). Result: Pass.\n");
+          pass++;
       }
-      else
-          Serial.print("method: testGetIR_on(). Result: Fail.\n");
+      else{
+          Serial.print("method: testGetIR_on(). Result: Fail. Expected: On. Actual: Off\n");
+
+      }
     }
     void testGetIR_off(){
       boolean retVal = control->getIR();
-      if(retVal == false)
+      if(retVal == false){
           Serial.print("method: testGetIR_off(). Result: Pass.\n");
-      else
-          Serial.print("method: testGetIR_off(). Result: Fail.\n");
+          pass++;
+      }
+      else{
+          Serial.print("method: testGetIR_off(). Result: Fail. Expected: Off. Actual: On\n");
+
+      }
 
     }
     void testGetIR_invalid(){
       boolean retVal = control->getIR();
-      if(retVal == false)
+      if(retVal == false){
           Serial.print("method: testGetIR_invalid(). Result: Pass.\n");
-      else
-          Serial.print("method: testGetIR_invalid(). Result: Fail.\n");
+          pass++;
+      }
+      else{
+          Serial.print("method: testGetIR_invalid(). Result: Fail. Expected: Off. Actual: On\n");
+
+      }
     }
 
     
@@ -198,7 +210,9 @@ void loop() {
   irtest->testGetIR_off();
   irtest = new IRTest(new Control(new SensorStub(3)));
   irtest->testGetIR_invalid();
-  Serial.print("Testing complete\n");
+  //print results of test
+  Serial.print("IR stub testing complete. Passed ");Serial.print(pass);
+  Serial.print(" out of ");Serial.print(totalTests);Serial.print(" tests.");
   while(1){
     //control->getIR();
   }

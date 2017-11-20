@@ -1,13 +1,32 @@
+//last updated: November 20, 2017
+
 String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
 
 boolean buzzerOn = false;
 
 //PIN CONNECTIONS
-//connected to analog pin 0
-const int temperaturePin = 0;
+
+//Analog Pins
+const int temperaturePin = 5; //temp. sensor to arduino pin 5
+const int irPin0 = 0;          //IR receiver to arduino pin 0
+const int irPin1 = 1;          //IR receiver to arduino pin 1
+const int irPin2 = 2;          //IR receiver to arduino pin 2
+const int irPin3 = 3;          //IR receiver to arduino pin 3
+//Digital Pins
 const int buzzerPin = 3; //buzzer to arduino pin 3
 const int buttonPin = 7; //button to arduino pin 7
+const int irLedPin = 12; //ir LED to arduino pin 12
+
+boolean IRButton1;
+boolean IRButton2;
+boolean IRButton3;
+boolean IRButton4;
+
+boolean flag1;
+boolean flag2;
+boolean flag3;
+boolean flag4;
 
 void setup() {
   //blue led
@@ -18,7 +37,10 @@ void setup() {
   // Set buzzer - pin 3 as an output
   pinMode(buzzerPin, OUTPUT);
   // Set button - pin 7 as an input
-  pinMode(buttonPin, INPUT); 
+  pinMode(buttonPin, INPUT);
+  //set IR LED - pin 12 as output
+  pinMode(irLedPin,OUTPUT);
+   
 
   // initialize serial:
   Serial.begin(9600);
@@ -26,23 +48,33 @@ void setup() {
   // reserve 200 bytes for the inputString:
   inputString.reserve(200);
 
-  
+  //start with IR led on
+  digitalWrite(irLedPin, 1);
+
 }
 
 void loop() {
-  
-  // print the string when a newline arrives:
+
+  //when arduino has received a request from server, send appropriate information back
   if (stringComplete) {
     if(buzzerOn == true){
       noTone(buzzerPin);
     }
+    
     //LED test
     digitalWrite(7, 1);
     int complete = 0;
+    
     if(inputString=="2")
     {
       float temp = getTemperature();
-      Serial.write(temp);
+      char str[20];
+      sprintf(str, "%d.%02d", (int)temp, (int)(temp*100)%100);
+      //Serial.println(str);
+      //Serial.write(str); actual
+      
+      //for testing
+      Serial.write("2 received");
       complete = 1;
     }
     else if(inputString=="3")
@@ -52,6 +84,8 @@ void loop() {
         Serial.write("Buzzer:true",11);
       else
         Serial.write("Buzzer:false",12);
+
+      Serial.write("3 received");
       complete = 1;
     }
     else if(inputString=="4")
@@ -67,8 +101,24 @@ void loop() {
     }
     else if(inputString=="5")
     {
-      //getIRButtonState()
-      temp = 20;
+      //this does not implement the quadrants, just looking at the ir sensors individually
+      if(flag1 == true){
+        Serial.write("irButton 1 on");
+        flag1 = false;
+      }
+      if(flag2 == true){
+        Serial.write("irButton 2 on");
+        flag2 = false;
+      }
+      if(flag3 == true){
+        Serial.write("irButton 3 on");
+        flag3 = false;
+      }
+      if(flag4 == true){
+        Serial.write("irButton 4 on");
+        flag4 = false;
+      }
+      complete = 1;
     }
 
     //0000 will be used for errors
@@ -84,8 +134,23 @@ void loop() {
     //set complete back to 0
     complete = 0;
     //turn BLUE led off
+    delay(500);
     digitalWrite(7, 0);
   }
+  
+  //check if IR sensors have noticed something
+  IRButton1 = getIRButtonState(0);
+  IRButton2 = getIRButtonState(1);
+  IRButton3 = getIRButtonState(2);
+  IRButton4 = getIRButtonState(3);
+  if(IRButton1 == true)
+    flag1 = true;
+  if(IRButton2 == true)
+    flag2 = true;
+  if(IRButton3 == true)
+    flag3 = true;
+  if(IRButton4 == true)
+    flag4 = true;
 }
 
 /*
@@ -105,6 +170,7 @@ void serialEvent() {
     // so the main loop can do something about it:
     if (inChar == '\n' || inChar == '2' || inChar == '3' || inChar == '4' || inChar == '5') {
       stringComplete = true;
+      digitalWrite(2, 0); //turn green LED off
     }
   }
 
@@ -152,6 +218,36 @@ boolean getPushButtonState(){
     return true;
   else
     return false;
+}
+
+boolean getIRButtonState(int x)
+{
+  const int threshold = 400;
+  int reading = 5000;
+  
+  if(x == 0)
+  {
+     reading = analogRead(irPin0);
+  }
+  else if(x == 1)
+  {
+    reading = analogRead(irPin1);
+  }
+  else if (x == 2)
+  {
+    reading = analogRead(irPin2);
+  }
+  else if(x == 3)
+  {
+    reading = analogRead(irPin3);
+  }
+  else
+    return false;
+
+  if(reading == 5000 || reading < 0 || reading > 1023 )
+    return false;
+
+  return reading > threshold;
 }
 
 
