@@ -28,11 +28,13 @@ boolean flag2;
 boolean flag3;
 boolean flag4;
 
+
 void setup() {
+  //debugging LEDs
   //blue led
-  pinMode(7, OUTPUT);
+  //pinMode(7, OUTPUT);
   //green led
-  pinMode(2, OUTPUT);
+  //pinMode(2, OUTPUT);
   
   // Set buzzer - pin 3 as an output
   pinMode(buzzerPin, OUTPUT);
@@ -51,42 +53,54 @@ void setup() {
   //start with IR led on
   digitalWrite(irLedPin, 1);
 
+  randomSeed(analogRead(0));
+
 }
 
 void loop() {
 
   //when arduino has received a request from server, send appropriate information back
-  if (stringComplete) {
+  if (stringComplete) 
+  {
     if(buzzerOn == true){
       noTone(buzzerPin);
     }
-    
-    //LED test
-    digitalWrite(7, 1);
+
     int complete = 0;
     
-    if(inputString=="2")
+    if(inputString=="1")
     {
-      float temp = getTemperature();
+      float temp = random(300);
+      //temp = getTemperature();
+      char str[20];
+      sprintf(str, "%d", (int)temp);
+      //Serial.println(str);
+      
+      Serial.write(str); //actual
+      /*float temp = random(300);
+      //temp = getTemperature();
       char str[20];
       sprintf(str, "%d.%02d", (int)temp, (int)(temp*100)%100);
-      //Serial.println(str);
-      //Serial.write(str); actual
+      Serial.println(str);
+      */
+      //Serial.write(str); //actual
       
       //for testing
-      Serial.write("2 received");
+      //Serial.write("2 received");
       complete = 1;
+
     }
     else if(inputString=="3")
     {
-      boolean state = toggleBuzzer();
+      /*boolean state = toggleBuzzer();
       if(state == true)
         Serial.write("Buzzer:true",11);
       else
         Serial.write("Buzzer:false",12);
-
+*/
       Serial.write("3 received");
       complete = 1;
+
     }
     else if(inputString=="4")
     {
@@ -124,7 +138,6 @@ void loop() {
     //0000 will be used for errors
     if(complete == 0){  
       Serial.write(0000);
-      digitalWrite(2, 1);
     }
       
     // clear the string:
@@ -133,11 +146,8 @@ void loop() {
 
     //set complete back to 0
     complete = 0;
-    //turn BLUE led off
-    delay(500);
-    digitalWrite(7, 0);
   }
-  
+  /*
   //check if IR sensors have noticed something
   IRButton1 = getIRButtonState(0);
   IRButton2 = getIRButtonState(1);
@@ -151,6 +161,7 @@ void loop() {
     flag3 = true;
   if(IRButton4 == true)
     flag4 = true;
+    */
 }
 
 /*
@@ -161,16 +172,14 @@ void loop() {
  */
 void serialEvent() {
   while (Serial.available()) {
-    //digitalWrite(7, 1);
     // get the new byte:
     char inChar = (char)Serial.read();
     // add it to the inputString:
     inputString += inChar;
-    // if the incoming character is a newline, set a flag
+    // if the incoming character is what were expecting, set a flag
     // so the main loop can do something about it:
-    if (inChar == '\n' || inChar == '2' || inChar == '3' || inChar == '4' || inChar == '5') {
+    if (inChar == '\n' || inChar == '2' || inChar == '3' || inChar == '4' || inChar == '5' || inChar == '1') {
       stringComplete = true;
-      digitalWrite(2, 0); //turn green LED off
     }
   }
 
