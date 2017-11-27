@@ -77,27 +77,58 @@ public class Control {
 	 * @throws InterruptedException 
 	 * @throws NumberFormatException 
 	 */
-	private void processArduinoContent() throws NumberFormatException, InterruptedException {
-		//pushButton = ArduinoCommunication.getPushButtonState();
+	private void processArduinoContent() {
 		
-		String temp = ArduinoCommunication.getTemperature();
-		System.out.println(temp);
-		Thread.sleep(5000);
-		/*if (temp != indoorTemp){
-			GUIUpdate.setIndoorTemp(temp);
-			indoorTemp = temp;
+		String sensorData = ArduinoCommunication.getSensorData();
+		System.out.println(sensorData);
+		
+		boolean IR_Button1Temp, IR_Button2Temp, IR_Button3Temp, IR_Button4Temp;
+		if(sensorData.getBytes()[0] == '1') IR_Button1Temp = true;	
+		else IR_Button1Temp = false;	
+		if(sensorData.getBytes()[1] == '1') IR_Button2Temp = true;	
+		else IR_Button2Temp = false;	
+		if(sensorData.getBytes()[2] == '1') IR_Button3Temp = true;	
+		else IR_Button3Temp = false;	
+		if(sensorData.getBytes()[3] == '1') IR_Button4Temp = true;	
+		else IR_Button4Temp = false;	
+		
+		if((IR_Button1Temp != IR_Button1) || (IR_Button2Temp != IR_Button2) || (IR_Button3Temp != IR_Button3) || (IR_Button4Temp != IR_Button4)){
+			IR_Button1 = IR_Button1Temp;
+			IR_Button2 = IR_Button2Temp;
+			IR_Button3 = IR_Button3Temp;
+			IR_Button4 = IR_Button4Temp;
+			if(IR_Button1) System.out.println("IR button 1 pressed");
+			else System.out.println("IR button 1 unpressed");
+			if(IR_Button2) System.out.println("IR button 2 pressed");
+			else System.out.println("IR button 2 unpressed");
+			if(IR_Button3) System.out.println("IR button 3 pressed");
+			else System.out.println("IR button 3 unpressed");
+			if(IR_Button4) System.out.println("IR button 4 pressed");
+			else System.out.println("IR button 4 unpressed");
 		}
-		//indoorTemp = ArduinoCommunication.getTemperature();
+	
+		boolean pushButtonTemp;
+		if(sensorData.getBytes()[4] == '1') pushButtonTemp = true;	
+		else pushButtonTemp = false;
 		
-		// Get individual buttons from Object containing the four button states
-		IRButtons IRButtonStates = ArduinoCommunication.getIRButtonState();
-		IR_Button1 = IRButtonStates.getIRButton1();
-		IR_Button2 = IRButtonStates.getIRButton2();
-		IR_Button3 = IRButtonStates.getIRButton3();
-		IR_Button4 = IRButtonStates.getIRButton4();
+		if (pushButtonTemp != pushButton){
+			pushButton = pushButtonTemp;
+			if(pushButton) System.out.println("Push button pressed");
+			else System.out.println("Push button unpressed");
+		}
 		
-		// TODO: Actual Logic
-		*/
+		
+		if(Float.parseFloat(sensorData.substring(5, 9)) != indoorTemp){
+			//GUIUpdate.setIndoorTemp(Float.parseFloat(sensorData.substring(5, 9)));
+			indoorTemp = Float.parseFloat(sensorData.substring(5, 9));
+			System.out.println(Float.toString(indoorTemp));
+		}
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -153,7 +184,7 @@ public class Control {
 		AndroidCommunication.testAndroid();
 	}
 	
-	public static void main(String[] args) throws NumberFormatException, InterruptedException {
+	public static void main(String[] args){
 		Control instance = getInstance();
 		//instance.AndroidCommunication = new AndroidCommunication();
 		instance.ArduinoCommunication = new ArduinoCommunication();
