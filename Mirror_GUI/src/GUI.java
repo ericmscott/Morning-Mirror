@@ -21,11 +21,11 @@ public class GUI {
 //TODO
 //Check variable type and private or public
 	private JPanel panel;
-	private JFrame frame;
+	public JFrame window;
 	private JLabel titleLabel;
 	private JLabel newsTitleLabel;
 	private JTextArea newsContentLabel;
-	private JLabel indoorTempLabel;
+	public JLabel indoorTempLabel;
 	private JLabel outdoorTempLabel;
 	private JLabel timeLabel;
 	private JLabel timeToLeaveLabel;
@@ -45,19 +45,20 @@ public class GUI {
 	*/
 	public GUI() {
 		this.panel=new JPanel();
-		this.frame=new JFrame();
+		this.window =new JFrame();
 		this.titleLabel=new JLabel("Morning Mirror");
 		this.newsTitleLabel=new JLabel("Habs are bad");
 		this.newsContentLabel=new JTextArea("MONTREAL — It would have been a fine time for an old-fashioned bag skate, but Montreal Canadiens coach Claude Julien didn't have that option even if that was what he wanted."
 +"After closing a six-game homestand with what the coach called an embarrassing 5-4 loss to lowly Arizona followed by a 6-0 thrashing from the rival Toronto Maple Leafs, the old-school reaction would be to hold a punishing, no-sticks skate to drive home the message that such performances are unacceptable.",2,2);
 		this.newsContentLabel.setLineWrap(true);
 		this.newsContentLabel.setWrapStyleWord(true);
-		this.indoorTempLabel=new JLabel("indoor temp");
+		this.indoorTempLabel=new JLabel("aaaaaaaaaaaaaaaaaa");
 		this.outdoorTempLabel=new JLabel("outdoor temp");
 		this.timeLabel=new JLabel("time");
 		this.timeToLeaveLabel=new JLabel("time to leave");
 		this.sleepQualityLabel=new JLabel("Sleep Quality");
 		this.busLabel=new JLabel("bus");
+		this.indoorTempLabel.setText("50");
 	}
 	
 	
@@ -86,7 +87,11 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void updateIndoorTempLabel(float indoorTemp) {
+		System.out.println("333");
+		System.out.println(indoorTempLabel);
 		indoorTempLabel.setText(Float.toString(indoorTemp));
+		indoorTempLabel.paintImmediately(this.indoorTempLabel.getVisibleRect());
+//		window.repaint();
 	}
 	/**
 	 * Description:
@@ -167,7 +172,7 @@ public class GUI {
 	 */
 	public void makeLayout() {
 		panel= new JPanel(new MigLayout());
-		JFrame window = new JFrame();
+		window = new JFrame();
 		window.setSize(2100, 1050);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    Container cp = window.getContentPane();
@@ -175,7 +180,7 @@ public class GUI {
 	    
 		cp.add(titleLabel,"north");
 		cp.add(timeLabel);
-		cp.add(newsTitleLabel);
+		cp.add(newsTitleLabel,"span 2 1");
 		//TODO 
 		//fix so it reads variables 
 		cp.add(indoorTempLabel,"wrap");
@@ -190,12 +195,15 @@ public class GUI {
 		
 		
 	}
-	public static void main(String[] args)
+	public void start()
 	{
 		//JFrame window = new JFrame();
-		GUI MirrorGUI = new GUI();
+		//GUI MirrorGUI = new GUI();
 		//MirrorGUI.updateSleepQualityLabel(5);
-		MirrorGUI.makeLayout();
+//		MirrorGUI.
+		makeLayout();
+//		MirrorGUI.
+		updateSleepQualityLabel(5);
 		//window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    //Container cp = window.getContentPane();
 	    //MirrorGUI.updateIndoorTempLabel(5.0f);

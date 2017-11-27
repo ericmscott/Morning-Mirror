@@ -1,3 +1,5 @@
+import javax.swing.JLabel;
+
 //TODO
 //import Server.News.*;
 //TODO
@@ -14,7 +16,12 @@ public class Control {
 	private int sleepQuality;
 	private Bus bus;
 	
-	GUI gui= new GUI();
+	public GUI gui;//= new GUI();
+	//gui.start
+	public Control(){
+		gui= new GUI();
+		gui.start();
+	}
 	//TODO
 	//double check public or private
 	/**
@@ -43,13 +50,16 @@ public class Control {
 	 * Return: Void
 	 */
 	public boolean updateindoorTemp(float temp) {
-		if (temp>40f||temp<0f){
-			return false;
-		}
-		
+		//if (temp>40f||temp<0f){
+		//	return false;
+		//}
+		System.out.println("222");
 		indoorTemp=temp;
+		//label.setText("35");
 		gui.updateIndoorTempLabel(temp);
+		System.out.println("444");
 		return true;
+		//return false;
 	}
 	/**
 	 * Description:
