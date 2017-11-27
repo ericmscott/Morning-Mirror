@@ -77,20 +77,58 @@ public class Control {
 	 * @throws InterruptedException 
 	 * @throws NumberFormatException 
 	 */
-	private void processArduinoContent() {		
+	private void processArduinoContent() {
+		
 		String sensorData = ArduinoCommunication.getSensorData();
 		System.out.println(sensorData);
+		
+		boolean IR_Button1Temp, IR_Button2Temp, IR_Button3Temp, IR_Button4Temp;
+		if(sensorData.getBytes()[0] == '1') IR_Button1Temp = true;	
+		else IR_Button1Temp = false;	
+		if(sensorData.getBytes()[1] == '1') IR_Button2Temp = true;	
+		else IR_Button2Temp = false;	
+		if(sensorData.getBytes()[2] == '1') IR_Button3Temp = true;	
+		else IR_Button3Temp = false;	
+		if(sensorData.getBytes()[3] == '1') IR_Button4Temp = true;	
+		else IR_Button4Temp = false;	
+		
+		if((IR_Button1Temp != IR_Button1) || (IR_Button2Temp != IR_Button2) || (IR_Button3Temp != IR_Button3) || (IR_Button4Temp != IR_Button4)){
+			IR_Button1 = IR_Button1Temp;
+			IR_Button2 = IR_Button2Temp;
+			IR_Button3 = IR_Button3Temp;
+			IR_Button4 = IR_Button4Temp;
+			if(IR_Button1) System.out.println("IR button 1 pressed");
+			else System.out.println("IR button 1 unpressed");
+			if(IR_Button2) System.out.println("IR button 2 pressed");
+			else System.out.println("IR button 2 unpressed");
+			if(IR_Button3) System.out.println("IR button 3 pressed");
+			else System.out.println("IR button 3 unpressed");
+			if(IR_Button4) System.out.println("IR button 4 pressed");
+			else System.out.println("IR button 4 unpressed");
+		}
+	
+		boolean pushButtonTemp;
+		if(sensorData.getBytes()[4] == '1') pushButtonTemp = true;	
+		else pushButtonTemp = false;
+		
+		if (pushButtonTemp != pushButton){
+			pushButton = pushButtonTemp;
+			if(pushButton) System.out.println("Push button pressed");
+			else System.out.println("Push button unpressed");
+		}
+		
+		
+		if(Float.parseFloat(sensorData.substring(5, 9)) != indoorTemp){
+			//GUIUpdate.setIndoorTemp(Float.parseFloat(sensorData.substring(5, 9)));
+			indoorTemp = Float.parseFloat(sensorData.substring(5, 9));
+			System.out.println(Float.toString(indoorTemp));
+		}
+		
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		float temp = Float.parseFloat(sensorData);
-		if (temp != indoorTemp){
-			GUIUpdate.setIndoorTemp(temp);
-			indoorTemp = temp;
-		}
-		// TODO: Parse Rest of Data + Logic
 	}
 	
 	/**
@@ -151,7 +189,7 @@ public class Control {
 		//instance.AndroidCommunication = new AndroidCommunication();
 		instance.ArduinoCommunication = new ArduinoCommunication();
 		//instance.InternetCommunication = new InternetCommunication();
-		instance.GUIUpdate = new GUIUpdate();
+		//instance.GUIUpdate = new GUIUpdate();
 		/*
 		//TODO: Thread stuff
 		Thread t1 = new Thread();

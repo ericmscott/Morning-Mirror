@@ -16,7 +16,16 @@ public class ArduinoCommunication {
 	 * boolean: Data whether pushButton is set or not
 	 */
 	public String getSensorData(){
-		return s.sendRequest("1");
+		String str;
+		try{
+			str = s.sendRequest("1");
+			System.out.println("Test Successful");
+		} catch(Exception e){
+			System.out.println("Test Failed");
+			return null;
+		}
+		
+		return str;
 	}
 	
 	
@@ -30,7 +39,12 @@ public class ArduinoCommunication {
 	 * @return 
 	 */
 	public void toggleBuzzer(){
-		s.sendRequest("2");
+		try{
+			s.sendRequest("2");
+			System.out.println("Send Successful");
+		} catch(Exception e){
+			System.out.println("Send Failed");
+		}
 	}
 	
 	/**
@@ -42,7 +56,12 @@ public class ArduinoCommunication {
 	 * Return: Void
 	 */
 	public void toggleSleep(){
-		s.sendRequest("3");
+		try{
+			s.sendRequest("3");
+			System.out.println("Test Successful");
+		} catch(Exception e){
+			System.out.println("Test Failed");
+		}
 	}
 	
 	/**
@@ -54,6 +73,11 @@ public class ArduinoCommunication {
 	 * Return: Void
 	 */
 	public void testArduino(){
-		s.sendRequest("4");
+		try{
+			s.sendRequest("4");
+			System.out.println("Test Successful");
+		} catch(Exception e){
+			System.out.println("Test Failed");
+		}
 	}
 }
