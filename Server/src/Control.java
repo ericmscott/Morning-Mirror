@@ -77,27 +77,20 @@ public class Control {
 	 * @throws InterruptedException 
 	 * @throws NumberFormatException 
 	 */
-	private void processArduinoContent() throws NumberFormatException, InterruptedException {
-		//pushButton = ArduinoCommunication.getPushButtonState();
-		
-		String temp = ArduinoCommunication.getTemperature();
-		System.out.println(temp);
-		Thread.sleep(5000);
-		/*if (temp != indoorTemp){
+	private void processArduinoContent() {		
+		String sensorData = ArduinoCommunication.getSensorData();
+		System.out.println(sensorData);
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		float temp = Float.parseFloat(sensorData);
+		if (temp != indoorTemp){
 			GUIUpdate.setIndoorTemp(temp);
 			indoorTemp = temp;
 		}
-		//indoorTemp = ArduinoCommunication.getTemperature();
-		
-		// Get individual buttons from Object containing the four button states
-		IRButtons IRButtonStates = ArduinoCommunication.getIRButtonState();
-		IR_Button1 = IRButtonStates.getIRButton1();
-		IR_Button2 = IRButtonStates.getIRButton2();
-		IR_Button3 = IRButtonStates.getIRButton3();
-		IR_Button4 = IRButtonStates.getIRButton4();
-		
-		// TODO: Actual Logic
-		*/
+		// TODO: Parse Rest of Data + Logic
 	}
 	
 	/**
@@ -153,12 +146,12 @@ public class Control {
 		AndroidCommunication.testAndroid();
 	}
 	
-	public static void main(String[] args) throws NumberFormatException, InterruptedException {
+	public static void main(String[] args){
 		Control instance = getInstance();
 		//instance.AndroidCommunication = new AndroidCommunication();
 		instance.ArduinoCommunication = new ArduinoCommunication();
 		//instance.InternetCommunication = new InternetCommunication();
-		//instance.GUIUpdate = new GUIUpdate();
+		instance.GUIUpdate = new GUIUpdate();
 		/*
 		//TODO: Thread stuff
 		Thread t1 = new Thread();

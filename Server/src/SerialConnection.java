@@ -79,18 +79,8 @@ public class SerialConnection {
         }
         //System.exit(0);
     }
-
     
-    public boolean checkIfReceived(){
-        if(received == 0) return false;
-        return true;
-    }
-    
-    public String getResponse(){
-        return payload;
-    }
-    
-    public String setRequest(String s){
+    public String sendRequest(String s){
        received = 0;
        request(s);
        return payload;

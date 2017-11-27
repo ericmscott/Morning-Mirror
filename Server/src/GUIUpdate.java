@@ -1,6 +1,6 @@
 
 public class GUIUpdate {
-
+    UDPSender sender = new UDPSender();
 	/**
 	 * Description:
 	 * Function which updates the GUI with new data
@@ -11,7 +11,8 @@ public class GUIUpdate {
 	 * Return: Void
 	 */
 	public void setIndoorTemp(float indoorTemp){
-		//TODO
+		String s = Float.toString(indoorTemp);
+		sender.sendMessage(s);
 	}
 	
 	/**
@@ -24,7 +25,8 @@ public class GUIUpdate {
 	 * Return: Void
 	 */
 	public void setOutdoorTemp(float outdoorTemp){
-		//TODO
+		String s = Float.toString(outdoorTemp);
+		sender.sendMessage(s);
 	}
 	
 	/**
