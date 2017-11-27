@@ -52,9 +52,6 @@ void setup() {
 
   //start with IR led on
   digitalWrite(irLedPin, 1);
-
-  randomSeed(analogRead(0));
-
 }
 
 void loop() {
@@ -70,23 +67,29 @@ void loop() {
     
     if(inputString=="1")
     {
-      float temp = random(300);
-      //temp = getTemperature();
-      char str[20];
-      sprintf(str, "%d", (int)temp);
-      //Serial.println(str);
-      
-      Serial.write(str); //actual
       /*float temp = random(300);
       //temp = getTemperature();
       char str[20];
-      sprintf(str, "%d.%02d", (int)temp, (int)(temp*100)%100);
-      Serial.println(str);
-      */
-      //Serial.write(str); //actual
+      sprintf(str, "%d", (int)temp);
+      //Serial.println(str);*/
+      //float temp = random(300);
       
-      //for testing
-      //Serial.write("2 received");
+      //get each one, and append to string, write to serial comm.
+      String msgToServer = "";
+
+      //append IR button states
+      msgToServer += updateIRButtons();
+
+      //append push button state
+      msgToServer += getPushButtonState();
+
+      //append temperature
+      msgToServer += getTemperature();
+      
+      //Serial.print(msgToServer); 
+      Serial.print("1001123.223333");
+
+      //flag that indicates that message has been sent to server
       complete = 1;
 
     }
@@ -102,38 +105,8 @@ void loop() {
       complete = 1;
 
     }
-    else if(inputString=="4")
-    {
-      boolean state = getPushButtonState();
-      if(state == true)
-        Serial.write("Button:true",11);
-      else
-        Serial.write("Button:false",12);
 
-      complete = 1;
-      
-    }
-    else if(inputString=="5")
-    {
-      //this does not implement the quadrants, just looking at the ir sensors individually
-      if(flag1 == true){
-        Serial.write("irButton 1 on");
-        flag1 = false;
-      }
-      if(flag2 == true){
-        Serial.write("irButton 2 on");
-        flag2 = false;
-      }
-      if(flag3 == true){
-        Serial.write("irButton 3 on");
-        flag3 = false;
-      }
-      if(flag4 == true){
-        Serial.write("irButton 4 on");
-        flag4 = false;
-      }
-      complete = 1;
-    }
+
 
     //0000 will be used for errors
     if(complete == 0){  
@@ -147,7 +120,7 @@ void loop() {
     //set complete back to 0
     complete = 0;
   }
-  /*
+  
   //check if IR sensors have noticed something
   IRButton1 = getIRButtonState(0);
   IRButton2 = getIRButtonState(1);
@@ -161,7 +134,45 @@ void loop() {
     flag3 = true;
   if(IRButton4 == true)
     flag4 = true;
-    */
+   
+}
+//this implementation looks at IR sensors individually
+//get latest version of IR buttons
+String updateIRButtons(){
+  
+  //state of IR buttons will be appended to this string (1 for ON, 0 for OFF)
+  String temp = "";
+
+  //check IR button 1
+  if(flag1 == true){
+    temp+="1";
+    //update flag to receive new button requests
+    flag1 = false;
+  }else
+    temp+="0";
+    
+  //check IR button 2
+  if(flag2 == true){
+    temp+="1";
+    flag2 = false;
+  }else
+    temp+="0";
+
+  //check IR button 3
+  if(flag3 == true){
+    temp+="1";
+    flag3 = false;
+  }else
+    temp+="0";
+
+  //check IR button 4
+  if(flag4 == true){
+    temp+="1";
+    flag4 = false;
+  }else
+    temp+="0";
+
+  return temp;
 }
 
 /*
@@ -191,16 +202,17 @@ void serialEvent() {
  * input: none
  * output: float representing temperature in degrees celsius
  */
-float getTemperature() {
+String getTemperature() {
   //read value from temperature sensor
   int reading = analogRead(temperaturePin);  
-  float temperatureC = 0.48828125 * reading ;  //converting from 10 mv per degree wit 500 mV offset
+  float temperatureC = 0.4883 * reading ;  //converting from 10 mv per degree wit 500 mV offset
                                                //to degrees ((voltage - 500mV) times 100)
 
-  //print to serial monitor for debugging purposes
-  //Serial.print(temperatureC); Serial.println(" degrees C");
   
-  return temperatureC;
+  char str[20];
+  sprintf(str, "%d.%02d", (int)temperatureC, (int)(temperatureC*100)%100);
+  //Serial.println(str);
+  return str;
   
   /*//Faranheit conversion
   float temperatureF = (temperatureC * 9.0 / 5.0) + 32.0;
@@ -220,13 +232,14 @@ boolean toggleBuzzer(){
   return buzzerOn;
 }
 
-boolean getPushButtonState(){
+String getPushButtonState(){
   //status of push button
   int buttonState = digitalRead(buttonPin);
+  
   if(buttonState == 1)
-    return true;
+    return "1";
   else
-    return false;
+    return "0";
 }
 
 boolean getIRButtonState(int x)
