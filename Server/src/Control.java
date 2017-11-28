@@ -47,7 +47,16 @@ public class Control {
 	 * Return: Void
 	 */
 	public void refreshInternetContent() {
-		float temp = InternetCommunication.getWeather();
+		
+		InternetCommunication.json();
+		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		/*float temp = InternetCommunication.getWeather();
 		if (temp != outdoorTemp){
 			//GUIUpdate.setOutdoorTemp(temp);
 			outdoorTemp = temp;
@@ -59,11 +68,11 @@ public class Control {
 			news = temp2;
 		}
 
-		Bus temp3 = InternetCommunication.getBus(7/*bus.getBusNumber()*/);
+		Bus temp3 = InternetCommunication.getBus(bus.getBusNumber());
 		if (bus != null && temp3 != bus){ //TODO: Fix this (add isEqual to news or whatever)
 			//GUIUpdate.setBusData(temp3);
 			bus = temp3;
-		}
+		}*/
 
 	}
 	
@@ -188,7 +197,7 @@ public class Control {
 		Control instance = getInstance();
 		//instance.AndroidCommunication = new AndroidCommunication();
 		instance.ArduinoCommunication = new ArduinoCommunication();
-		//instance.InternetCommunication = new InternetCommunication();
+		instance.InternetCommunication = new InternetCommunication();
 		//instance.GUIUpdate = new GUIUpdate();
 		/*
 		//TODO: Thread stuff
@@ -197,8 +206,8 @@ public class Control {
 		Thread t3 = new Thread();
 		*/
 		while(true){
-			//instance.refreshInternetContent();
-			instance.processArduinoContent();
+			instance.refreshInternetContent();
+			//instance.processArduinoContent();
 			//instance.processAndroidData();
 		}
 	}

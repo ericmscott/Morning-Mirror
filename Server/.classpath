@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="pi4j-service-sources.jar"/>
 	<classpathentry kind="lib" path="pi4j-service.jar"/>
 	<classpathentry kind="lib" path="junit.jar"/>
+	<classpathentry kind="lib" path="jaunt1.3.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,45 +1,30 @@
-import org.json.*;
+import com.jaunt.*;
+import java.io.*;
 
 public class InternetCommunication {
 	
 	
-	/*
+	//OTTAWA JSON: http://samples.openweathermap.org/data/2.5/weather?id=6094817
+	
+	
 	public void json(){
-			
-		      JSONParser parser = new JSONParser();
-		      String s = "[0,{\"1\":{\"2\":{\"3\":{\"4\":[5,{\"6\":7}]}}}}]";
-				
-		      try{
-		         Object obj = parser.parse(s);
-		         JSONArray array = (JSONArray)obj;
-					
-		         System.out.println("The 2nd element of array");
-		         System.out.println(array.get(1));
-		         System.out.println();
-
-		         JSONObject obj2 = (JSONObject)array.get(1);
-		         System.out.println("Field \"1\"");
-		         System.out.println(obj2.get("1"));    
-
-		         s = "{}";
-		         obj = parser.parse(s);
-		         System.out.println(obj);
-
-		         s = "[5,]";
-		         obj = parser.parse(s);
-		         System.out.println(obj);
-
-		         s = "[5,,2]";
-		         obj = parser.parse(s);
-		         System.out.println(obj);
-		      }catch(ParseException pe){
-				
-		         System.out.println("position: " + pe.getPosition());
-		         System.out.println(pe);
-		      }
+		try{
+			  UserAgent userAgent = new UserAgent();         //create new userAgent (headless browser).
+			  userAgent.sendGET("http://api.openweathermap.org/data/2.5/weather?id=6094817&appid=5db02d37c7c36ce8bf3e9849b43e6982");   //send request
+			  JNode weather = userAgent.json.findFirst("weather");
+			  JNode weather2 = userAgent.json.findFirst("weather");
+			  System.out.println(weather);
+			  
+			  //System.out.println(userAgent.json);            //print the retrieved JSON object
+			  //System.out.println("Other response data: " + userAgent.response); //response metadata, including headers.
+			  
+			}
+		catch(JauntException e){         //if an HTTP/connection error occurs, handle JauntException.
+			System.err.println(e);
 		}
+	}
 
-	 /*
+	 
 	 
 	 
 	 /**
