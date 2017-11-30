@@ -1,4 +1,4 @@
-
+import java.net.*;
 public class Control {
 	
 	// Singleton Design Pattern
@@ -16,7 +16,7 @@ public class Control {
 	private GUIUpdate GUIUpdate;
 	
 	
-	private Time time;
+	private String time;
 	private Time destinationTime;
 	private Time timeToLeave;
 	private Time wakeUp;
@@ -25,7 +25,7 @@ public class Control {
 	private Location currentLocation;
 	private SleepData sleepData;
 
-	private float outdoorTemp;
+	private String outdoorTemp;
 	private float indoorTemp;
 	private int sleepQuality;
 	private boolean sleepMode;
@@ -36,6 +36,8 @@ public class Control {
 	private boolean pushButton;
 	private boolean buzzer;
 	private String destination;
+	private int currentArticle = 0;
+	int internetCount;
 	
 	
 	/**
@@ -48,29 +50,43 @@ public class Control {
 	 */
 	public void refreshInternetContent() {
 		
-		InternetCommunication.json();
+		String tempOutdoorTemp = InternetCommunication.getWeather();
+		System.out.println(tempOutdoorTemp);
+		if(!tempOutdoorTemp.equals(outdoorTemp)){
+			outdoorTemp = tempOutdoorTemp;
+			GUIUpdate.setOutdoorTemp(outdoorTemp);
+		}
 		
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		News temp2 = InternetCommunication.getNews(currentArticle);
+		//if ( news != null && temp2 != news){ //TODO: Fix this (add isEqual to news or whatever)
+			//GUIUpdate.setNews(temp2);
+			news = temp2;
+			System.out.println("Headline: " + news.getHeadline());
+			System.out.println("Content: " + news.getContent());
+		//}
+			
+		if(internetCount == 30){
+			currentArticle++;
+			internetCount = 0;
+		} else{
+			internetCount++;
+		}
+
+		try {
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
-		/*float temp = InternetCommunication.getWeather();
-		if (temp != outdoorTemp){
-			//GUIUpdate.setOutdoorTemp(temp);
-			outdoorTemp = temp;
-		}
-		
-		News temp2 = InternetCommunication.getNews();
-		if ( news != null && temp2 != news){ //TODO: Fix this (add isEqual to news or whatever)
-			//GUIUpdate.setNews(temp2);
-			news = temp2;
-		}
-
+		/*
 		Bus temp3 = InternetCommunication.getBus(bus.getBusNumber());
 		if (bus != null && temp3 != bus){ //TODO: Fix this (add isEqual to news or whatever)
-			//GUIUpdate.setBusData(temp3);
+			GUIUpdate.setBusData(temp3);
 			bus = temp3;
 		}*/
 
@@ -103,7 +119,9 @@ public class Control {
 		
 		if((IR_Button1Temp != IR_Button1) || (IR_Button2Temp != IR_Button2) || (IR_Button3Temp != IR_Button3) || (IR_Button4Temp != IR_Button4)){
 			IR_Button1 = IR_Button1Temp;
+			if(IR_Button1) currentArticle++;
 			IR_Button2 = IR_Button2Temp;
+			if(IR_Button2) currentArticle--;
 			IR_Button3 = IR_Button3Temp;
 			IR_Button4 = IR_Button4Temp;
 			if(IR_Button1) System.out.println("IR button 1 pressed");
@@ -128,7 +146,7 @@ public class Control {
 		
 		
 		if(Float.parseFloat(sensorData.substring(5, 9)) != indoorTemp){
-			//GUIUpdate.setIndoorTemp(Float.parseFloat(sensorData.substring(5, 9)));
+			GUIUpdate.setIndoorTemp(Float.parseFloat(sensorData.substring(5, 9)));
 			indoorTemp = Float.parseFloat(sensorData.substring(5, 9));
 			System.out.println(Float.toString(indoorTemp));
 		}
@@ -138,6 +156,7 @@ public class Control {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+				
 	}
 	
 	/**
@@ -149,6 +168,19 @@ public class Control {
 	 * Return: Void
 	 */
 	public void processAndroidData() {
+		try{
+			int port = 3000;
+			DatagramSocket socket = new DatagramSocket(port);
+			for(;;){
+				DatagramPacket packet = new DatagramPacket(new byte[1024], 1024);
+				socket.receive(packet);
+				System.out.println(new String(packet.getData()).trim());
+			}
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		/*
 		sleepData = AndroidCommunication.getSleepData();
 		wakeUp = AndroidCommunication.getWakeUp();
 		bus = AndroidCommunication.getBusData();
@@ -163,7 +195,7 @@ public class Control {
 		//GUIUpdate.setTimeToLeave(timeToLeave);
 		//GUIUpdate.setTime(time);
 		//GUIUpdate.setSleepQuality(sleepQuality);
-
+		*/
 	}
 	
 	/**
@@ -195,21 +227,57 @@ public class Control {
 	
 	public static void main(String[] args){
 		Control instance = getInstance();
-		//instance.AndroidCommunication = new AndroidCommunication();
+		instance.AndroidCommunication = new AndroidCommunication();
 		instance.ArduinoCommunication = new ArduinoCommunication();
 		instance.InternetCommunication = new InternetCommunication();
-		//instance.GUIUpdate = new GUIUpdate();
-		/*
-		//TODO: Thread stuff
-		Thread t1 = new Thread();
-		Thread t2 = new Thread();
-		Thread t3 = new Thread();
-		*/
-		while(true){
-			instance.refreshInternetContent();
-			//instance.processArduinoContent();
-			//instance.processAndroidData();
-		}
-	}
+		instance.GUIUpdate = new GUIUpdate();
+		for(int i=0; i<3; i++){
+		      new Thread("" + i){
+		        @SuppressWarnings("static-access")
+				public void run(){
+		          if(Thread.currentThread().getName().equals("0")){
+		        	  while(true){
+		        		  try{
+		        			  instance.refreshInternetContent();
+		        		  } catch(Exception e){ 
+		        			  System.out.println("Internet Communication Failure");
+		        			  try {
+								Thread.currentThread().sleep(5000);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+		        		  }
+		        	  }
+		          } else if(Thread.currentThread().getName().equals("1")){
+		        	  while(true){
+		        		  try{
+				      			instance.processArduinoContent();
+		        		  } catch(Exception e){ 
+		        			  System.out.println("Arduino Communication Failure");
+		        			  try {
+								Thread.currentThread().sleep(5000);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+		        		  }
+		        	  }
+		          } else if(Thread.currentThread().getName().equals("2")){
+	        		  try{
+		        		  instance.processAndroidData();
+	        		  } catch(Exception e){ 
+	        			  System.out.println("Android Communication Failure");
+	        			  try {
+							Thread.currentThread().sleep(5000);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+	        		  
+		        	  }
+		          }
 
+		        }
+		      }.start();
+		}
+
+	}
 }

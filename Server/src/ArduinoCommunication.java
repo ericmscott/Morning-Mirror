@@ -19,9 +19,8 @@ public class ArduinoCommunication {
 		String str;
 		try{
 			str = s.sendRequest("1");
-			System.out.println("Test Successful");
 		} catch(Exception e){
-			System.out.println("Test Failed");
+			System.out.println("Request Failed");
 			return null;
 		}
 		
@@ -41,7 +40,6 @@ public class ArduinoCommunication {
 	public void toggleBuzzer(){
 		try{
 			s.sendRequest("2");
-			System.out.println("Send Successful");
 		} catch(Exception e){
 			System.out.println("Send Failed");
 		}
@@ -58,9 +56,8 @@ public class ArduinoCommunication {
 	public void toggleSleep(){
 		try{
 			s.sendRequest("3");
-			System.out.println("Test Successful");
 		} catch(Exception e){
-			System.out.println("Test Failed");
+			System.out.println("Request Failed");
 		}
 	}
 	
@@ -75,9 +72,8 @@ public class ArduinoCommunication {
 	public void testArduino(){
 		try{
 			s.sendRequest("4");
-			System.out.println("Test Successful");
 		} catch(Exception e){
-			System.out.println("Test Failed");
+			System.out.println("Request Failed");
 		}
 	}
 }

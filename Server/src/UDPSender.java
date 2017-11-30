@@ -17,7 +17,7 @@ public class UDPSender {
     		 byte [] data = message.getBytes() ;
     		 DatagramPacket packet = new DatagramPacket( data, data.length, host, port ) ;
     		 socket.send( packet ); 
-	         System.out.println ("Closing down");
+	         System.out.println ("Packet sent to GUI");
 	      }
 	      catch( Exception e )
 	      {

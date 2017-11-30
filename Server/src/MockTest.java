@@ -35,7 +35,7 @@ public class MockTest {
       
 	}
 	
-	@Test
+/*	@Test
 	public void test2() {
 		
 		  expect(mock3.getWeather()).andReturn((float) 27.3);
@@ -46,7 +46,7 @@ public class MockTest {
 	      control.refreshInternetContent();	 
 	      verify();
 		}
-
+*/
 	
 }
 

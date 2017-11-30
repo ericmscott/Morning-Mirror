@@ -20,9 +20,6 @@ public class SerialConnection {
     public void request(String req){
         String port = System.getProperty("serial.port", "/dev/ttyACM0");
         int br = Integer.parseInt(System.getProperty("baud.rate", "9600"));
-        System.out.println("Serial Communication.");
-        System.out.println(" ... connect using settings: " + Integer.toString(br) + ", N, 8, 1.");
-        System.out.println(" ... data received on serial port should be displayed below.");
         // create an instance of the serial communications class
         // create and register the serial data listener
         final Serial serial = SerialFactory.createInstance();
@@ -41,13 +38,11 @@ public class SerialConnection {
         });
 
         try {
-            System.out.println("Opening port [" + port + ":" + Integer.toString(br) + "]");
             try {
                 serial.open(port, br);
             } catch (IOException ioe) {
                 throw new RuntimeException(ioe);
             }
-            System.out.println("Port is opened.");
             try {
                 Thread.sleep(2500);
             } catch (InterruptedException e) {

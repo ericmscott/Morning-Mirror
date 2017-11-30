@@ -12,7 +12,7 @@ public class GUIUpdate {
 	 */
 	public void setIndoorTemp(float indoorTemp){
 		String s = Float.toString(indoorTemp);
-		sender.sendMessage(s);
+		sender.sendMessage("1" + s);
 	}
 	
 	/**
@@ -24,9 +24,8 @@ public class GUIUpdate {
 	 * 
 	 * Return: Void
 	 */
-	public void setOutdoorTemp(float outdoorTemp){
-		String s = Float.toString(outdoorTemp);
-		sender.sendMessage(s);
+	public void setOutdoorTemp(String outdoorTemp){
+		sender.sendMessage("2" + outdoorTemp);
 	}
 	
 	/**
