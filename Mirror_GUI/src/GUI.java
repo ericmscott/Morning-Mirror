@@ -31,6 +31,9 @@ public class GUI {
 	private JLabel timeToLeaveLabel;
 	private JLabel sleepQualityLabel;
 	private JLabel busLabel;
+	public Font myFontTitle; 
+	public Font myFontElse;
+	public Font myFontContent;
 	/*
 	private int newsHeight=1;
 	private int newsWidth=1;
@@ -46,19 +49,32 @@ public class GUI {
 	public GUI() {
 		this.panel=new JPanel();
 		this.window =new JFrame();
+		myFontTitle= new Font("my font", Font.PLAIN,90);
+		myFontElse= new Font("my font", Font.PLAIN,45);
+		myFontContent=new Font("my font", Font.PLAIN,20);
 		this.titleLabel=new JLabel("Morning Mirror");
+		titleLabel.setFont(myFontTitle);
 		this.newsTitleLabel=new JLabel("Habs are bad");
+		newsTitleLabel.setFont(myFontElse);
 		this.newsContentLabel=new JTextArea("MONTREAL — It would have been a fine time for an old-fashioned bag skate, but Montreal Canadiens coach Claude Julien didn't have that option even if that was what he wanted."
-+"After closing a six-game homestand with what the coach called an embarrassing 5-4 loss to lowly Arizona followed by a 6-0 thrashing from the rival Toronto Maple Leafs, the old-school reaction would be to hold a punishing, no-sticks skate to drive home the message that such performances are unacceptable.",2,2);
++"After closing a six-game homestand with what the coach called an embarrassing 5-4 loss to lowly Arizona followed by a 6-0 thrashing from the rival Toronto Maple Leafs, the old-school reaction would be to hold a punishing, no-sticks skate to drive home the message that such performances are unacceptable.",2,50);
 		this.newsContentLabel.setLineWrap(true);
 		this.newsContentLabel.setWrapStyleWord(true);
+		newsContentLabel.setFont(myFontContent);
 		this.indoorTempLabel=new JLabel("aaaaaaaaaaaaaaaaaa");
+		indoorTempLabel.setFont(myFontElse);
 		this.outdoorTempLabel=new JLabel("outdoor temp");
+		outdoorTempLabel.setFont(myFontElse);
 		this.timeLabel=new JLabel("time");
+		timeLabel.setFont(myFontElse);
 		this.timeToLeaveLabel=new JLabel("time to leave");
+		timeToLeaveLabel.setFont(myFontElse);
 		this.sleepQualityLabel=new JLabel("Sleep Quality");
+		sleepQualityLabel.setFont(myFontElse);
 		this.busLabel=new JLabel("bus");
+		busLabel.setFont(myFontElse);
 		this.indoorTempLabel.setText("50");
+		indoorTempLabel.setFont(myFontElse);
 	}
 	
 	
@@ -74,9 +90,13 @@ public class GUI {
 	 * 
 	 * Return: Void
 	 */
-	public void updateNewsLabel(News news) {
-		newsTitleLabel.setText(news.getHeadline());
-		newsContentLabel.setText(news.getContent());
+	public void updateNewsHeadlineLabel(String news) {
+		newsTitleLabel.setText(news);
+		
+	}
+	public void updateNewsContentLabel(String news) {
+		
+		newsContentLabel.setText(news);
 	}
 	/**
 	 * Description:
@@ -101,8 +121,8 @@ public class GUI {
 	 * 
 	 * Return: Void
 	 */
-	public void updateOutdoorTempLabel(float temp) {
-		outdoorTempLabel.setText(Float.toString(temp));
+	public void updateOutdoorTempLabel(String  temp) {
+		outdoorTempLabel.setText(temp);
 	}
 	/**
 	 * Description:
@@ -112,8 +132,8 @@ public class GUI {
 	 * 
 	 * Return: Void
 	 */
-	public void updateTimeLabel(Time time) {
-		timeLabel.setText(time.toString());
+	public void updateTimeLabel(String time) {
+		timeLabel.setText(time);
 	}
 	/**
 	 * Description:
@@ -123,8 +143,8 @@ public class GUI {
 	 * 
 	 * Return: Void
 	 */
-	public void updateTimeToLeaveLabel(Time timeToLeave) {
-		timeToLeaveLabel.setText(timeToLeave.toString());
+	public void updateTimeToLeaveLabel(String timeToLeave) {
+		timeToLeaveLabel.setText(timeToLeave);
 	}
 	/**
 	 * Description:
@@ -173,23 +193,23 @@ public class GUI {
 	public void makeLayout() {
 		panel= new JPanel(new MigLayout());
 		window = new JFrame();
-		window.setSize(2100, 1050);
+		window.setSize(1920,1080 );
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    Container cp = window.getContentPane();
 	    cp.setLayout(new MigLayout(""));
 	    
-		cp.add(titleLabel,"north");
-		cp.add(timeLabel);
-		cp.add(newsTitleLabel,"span 2 1");
+		cp.add(titleLabel,"north, gap 375");
+		cp.add(timeLabel,"span 3 1");
+		cp.add(newsTitleLabel,"align center,span 3 1");
 		//TODO 
 		//fix so it reads variables 
 		cp.add(indoorTempLabel,"wrap");
-		cp.add(timeToLeaveLabel);
-		cp.add(newsContentLabel,"span 2 3");
+		cp.add(timeToLeaveLabel, "span 2 1");
+		cp.add(newsContentLabel,"align center,span 3 3");
 
 		cp.add(outdoorTempLabel,"wrap");
-		cp.add(busLabel);
-		cp.add(sleepQualityLabel);
+		//cp.add(busLabel);
+		//cp.add(sleepQualityLabel);
 		//window.pack();
 	    window.setVisible(true);
 		

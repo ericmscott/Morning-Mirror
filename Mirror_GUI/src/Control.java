@@ -8,11 +8,12 @@ import javax.swing.JLabel;
 //import Server.Bus.*;
 
 public class Control {
-	private News news;
+	private String newsHeadline;
+	private String newsContent;
 	private float indoorTemp;
-	private float outdoorTemp;
-	private Time time;
-	private Time timeToLeave;
+	private String outdoorTemp;
+	private String time;
+	private String timeToLeave;
 	private int sleepQuality;
 	private Bus bus;
 	
@@ -32,13 +33,22 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public boolean updateNews(News news) {
+	public boolean updateNewsHeadline(String news) {
 		//TODO
-		if (news.getHeadline()=="" || news.getContent()==""){
+		if (news==""){
 			return false;
 		}
-		this.news=news;
-		gui.updateNewsLabel(news);
+		this.newsHeadline=news;
+		gui.updateNewsHeadlineLabel(news);
+		return true;
+	}
+	public boolean updateNewsContent(String news) {
+		//TODO
+		if (news==""){
+			return false;
+		}
+		this.newsContent=news;
+		gui.updateNewsContentLabel(news);
 		return true;
 	}
 	/**
@@ -69,10 +79,10 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public boolean updateOutdoorTemp(float temp) {
-		if (temp>40f||temp<-40f){
-			return false;
-		}
+	public boolean updateOutdoorTemp(String temp) {
+		//if (temp>40f||temp<-40f){
+		//	return false;
+	//	}
 		
 		outdoorTemp= temp;
 		gui.updateOutdoorTempLabel(temp);
@@ -86,10 +96,10 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public boolean updateTime(Time time) {
-		if (time.getHour()>23||time.getHour()<0){
-			return false;
-		}
+	public boolean updateTime(String time) {
+		//if (time.getHour()>23||time.getHour()<0){
+			//return false;
+		//}
 		this.time=time;
 		gui.updateTimeLabel(time);
 		return true;
@@ -134,10 +144,10 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	public boolean updateTimeToLeave(Time timeToLeave) {
-		if (timeToLeave.getHour()>23||timeToLeave.getHour()<0){
-			return false;
-		}
+	public boolean updateTimeToLeave(String timeToLeave) {
+		//if (timeToLeave.getHour()>23||timeToLeave.getHour()<0){
+		//	return false;
+		//}
 		this.timeToLeave=timeToLeave;
 		gui.updateTimeToLeaveLabel(timeToLeave);
 		return true;
@@ -150,16 +160,16 @@ public class Control {
 	 * 
 	 * Return: current time
 	 */
-	public Time getTime() {
-		return time;
-	}
-	public News getNews() {
-		return news;
-	}
+	//public Time getTime() {
+	//	return time;
+	//}
+	//public News getNews() {
+	//	return news;
+//	}
 	public float getIndoorTemp() {
 		return indoorTemp;
 	}
-	public float getOutdoorTemp() {
+	public String getOutdoorTemp() {
 		
 		return outdoorTemp;
 	}
@@ -170,10 +180,10 @@ public class Control {
 	public Bus getBus() {
 		return bus;
 	}
-	public Time getTimeToLeave() {
+	//public Time getTimeToLeave() {
 		
-		return timeToLeave;
-	}
+		//return timeToLeave;
+	//}
 	/**
 	 * Description:
 	 * Function which test the GUI to make sure everything is displayed correctly.

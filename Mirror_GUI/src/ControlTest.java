@@ -8,7 +8,7 @@ import org.junit.Test;
 public class ControlTest {
 	
 	
-	
+	/*
 	
 
 	@Test
@@ -214,5 +214,5 @@ public class ControlTest {
 		
 		
 		
-	}
+	}*/
 }
