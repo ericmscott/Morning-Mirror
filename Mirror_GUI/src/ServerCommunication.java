@@ -18,11 +18,7 @@ public class ServerCommunication {
 	public static void main( String args[] )
 	{ 
 		Control serverCom = new Control();
-//		float f = (float) 70.0;
-//		System.out.println("111");
-//		serverCom.updateindoorTemp(f);
-		// Check the arguments
-		serverCom.updateTime((new Date()).toString());
+		
 		if( args.length != 1 )
 		{
 			System.out.println( "usage: UDPReceiver port" ) ;
@@ -37,6 +33,7 @@ public class ServerCommunication {
 
 			for( ;; )
 			{
+				serverCom.updateTime((new Date()).toString());
 				System.out.println( "Receiving on port " + port ) ;
 				DatagramPacket packet = new DatagramPacket( new byte[PACKETSIZE], PACKETSIZE ) ;
 				socket.receive( packet ) ;
@@ -59,28 +56,12 @@ public class ServerCommunication {
 				break;
 				case '2': serverCom.updateOutdoorTemp(s.substring(1));
 				break;
-				case '3': serverCom.updateNewsContent(s.substring(1));
+				case '3': serverCom.updateNewsHeadline(s.substring(1));
 					
-				case '4': serverCom.updateNewsHeadline(s.substring(1));
-				break;
+				case '4': serverCom.updateNewsContent(s.substring(1));
 				
 				}
-				//TODO
-				//parse data 
-				/*
-				 *set variables from parsed data
-				 *
-	            if(time!=NULL) {
-	            	updateTime(time)
-	            }
-	            if(news!=NULL) {
-	            	updateNews(news)
-	            }
-	            if(indoorTemp!=NULL){
-	            	updateIndoorTemp(indoorTemp)
-	            }
-	            ...
-				 */
+
 
 			} 
 			//socket.close();

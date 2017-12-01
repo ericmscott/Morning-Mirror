@@ -141,7 +141,7 @@ public class GUI {
 	public void updateIndoorTempLabel(float indoorTemp) {
 		System.out.println("333");
 		System.out.println(indoorTempLabel);
-		indoorTempLabel.setText(Float.toString(indoorTemp));
+		indoorTempLabel.setText("indoor Temp: "+Float.toString(indoorTemp));
 		indoorTempLabel.paintImmediately(this.indoorTempLabel.getVisibleRect());
 //		window.repaint();
 	}
@@ -234,15 +234,18 @@ public class GUI {
 	    cp.setLayout(new MigLayout(""));
 	    cp.setBackground(Color.BLACK);
 		cp.add(titleLabel,"north, gap 375");
-		cp.add(timeLabel,"span 3 1");
-		cp.add(newsTitleLabel,"align center,span 3 1");
+		cp.add(newsContentLabel,"align center,span 3 3,south");
+		cp.add(timeLabel);
+		cp.add(newsTitleLabel,"align center, span 2 1,wrap");
 		//TODO 
 		//fix so it reads variables 
 		cp.add(indoorTempLabel,"wrap");
-		cp.add(timeToLeaveLabel, "span 2 1");
-		cp.add(newsContentLabel,"align center,span 3 3");
+		//cp.add(timeToLeaveLabel, "span 2 1");
+		//cp.add(newsContentLabel,"align center,span 3 3,wrap");
 
 		cp.add(outdoorTempLabel,"wrap");
+		cp.add(timeToLeaveLabel, "span 2 1,wrap");
+		//cp.add(newsContentLabel,"align center,span 3 3,south");
 		//cp.add(busLabel);
 		//cp.add(sleepQualityLabel);
 		//window.pack();
