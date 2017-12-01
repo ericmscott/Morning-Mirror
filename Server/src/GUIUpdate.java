@@ -38,7 +38,8 @@ public class GUIUpdate {
 	 * Return: Void
 	 */
 	public void setNews(News news){
-		//TODO
+		sender.sendMessage("3" + news.getHeadline());
+		sender.sendMessage("4" + news.getContent());
 	}
 	
 	/**

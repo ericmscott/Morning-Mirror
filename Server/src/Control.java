@@ -63,12 +63,12 @@ public class Control {
 			e.printStackTrace();
 		}
 		News temp2 = InternetCommunication.getNews(currentArticle);
-		//if ( news != null && temp2 != news){ //TODO: Fix this (add isEqual to news or whatever)
-			//GUIUpdate.setNews(temp2);
+		if ( news == null || !temp2.getHeadline().equals(news.getHeadline())){ //TODO: Fix this (add isEqual to news or whatever)
 			news = temp2;
+			GUIUpdate.setNews(news);
 			System.out.println("Headline: " + news.getHeadline());
 			System.out.println("Content: " + news.getContent());
-		//}
+		}
 			
 		if(internetCount == 30){
 			currentArticle++;
