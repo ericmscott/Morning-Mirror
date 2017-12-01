@@ -1,4 +1,4 @@
-
+import java.net.*;
 public class Control {
 	
 	// Singleton Design Pattern
@@ -10,7 +10,13 @@ public class Control {
 	}
 	// End of Singleton Design Pattern
 	
-	private Time time;
+	private AndroidCommunication AndroidCommunication;
+	private ArduinoCommunication ArduinoCommunication;
+	private InternetCommunication InternetCommunication;
+	private GUIUpdate GUIUpdate;
+	
+	
+	private String time;
 	private Time destinationTime;
 	private Time timeToLeave;
 	private Time wakeUp;
@@ -19,7 +25,7 @@ public class Control {
 	private Location currentLocation;
 	private SleepData sleepData;
 
-	private float outdoorTemp;
+	private String outdoorTemp;
 	private float indoorTemp;
 	private int sleepQuality;
 	private boolean sleepMode;
@@ -30,6 +36,8 @@ public class Control {
 	private boolean pushButton;
 	private boolean buzzer;
 	private String destination;
+	private int currentArticle = 0;
+	int internetCount;
 	
 	
 	/**
@@ -40,8 +48,47 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	private void refreshInternetContent() {
-		// TODO
+	public void refreshInternetContent() {
+		
+		String tempOutdoorTemp = InternetCommunication.getWeather();
+		System.out.println(tempOutdoorTemp);
+		if(!tempOutdoorTemp.equals(outdoorTemp)){
+			outdoorTemp = tempOutdoorTemp;
+			GUIUpdate.setOutdoorTemp(outdoorTemp);
+		}
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		News temp2 = InternetCommunication.getNews(currentArticle);
+		//if ( news != null && temp2 != news){ //TODO: Fix this (add isEqual to news or whatever)
+			//GUIUpdate.setNews(temp2);
+			news = temp2;
+			System.out.println("Headline: " + news.getHeadline());
+			System.out.println("Content: " + news.getContent());
+		//}
+			
+		if(internetCount == 30){
+			currentArticle++;
+			internetCount = 0;
+		} else{
+			internetCount++;
+		}
+
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		/*
+		Bus temp3 = InternetCommunication.getBus(bus.getBusNumber());
+		if (bus != null && temp3 != bus){ //TODO: Fix this (add isEqual to news or whatever)
+			GUIUpdate.setBusData(temp3);
+			bus = temp3;
+		}*/
 
 	}
 	
@@ -52,10 +99,64 @@ public class Control {
 	 * Parameters: None
 	 * 
 	 * Return: Void
+	 * @throws InterruptedException 
+	 * @throws NumberFormatException 
 	 */
 	private void processArduinoContent() {
-		// TODO 
-
+		
+		String sensorData = ArduinoCommunication.getSensorData();
+		System.out.println(sensorData);
+		
+		boolean IR_Button1Temp, IR_Button2Temp, IR_Button3Temp, IR_Button4Temp;
+		if(sensorData.getBytes()[0] == '1') IR_Button1Temp = true;	
+		else IR_Button1Temp = false;	
+		if(sensorData.getBytes()[1] == '1') IR_Button2Temp = true;	
+		else IR_Button2Temp = false;	
+		if(sensorData.getBytes()[2] == '1') IR_Button3Temp = true;	
+		else IR_Button3Temp = false;	
+		if(sensorData.getBytes()[3] == '1') IR_Button4Temp = true;	
+		else IR_Button4Temp = false;	
+		
+		if((IR_Button1Temp != IR_Button1) || (IR_Button2Temp != IR_Button2) || (IR_Button3Temp != IR_Button3) || (IR_Button4Temp != IR_Button4)){
+			IR_Button1 = IR_Button1Temp;
+			if(IR_Button1) currentArticle++;
+			IR_Button2 = IR_Button2Temp;
+			if(IR_Button2) currentArticle--;
+			IR_Button3 = IR_Button3Temp;
+			IR_Button4 = IR_Button4Temp;
+			if(IR_Button1) System.out.println("IR button 1 pressed");
+			else System.out.println("IR button 1 unpressed");
+			if(IR_Button2) System.out.println("IR button 2 pressed");
+			else System.out.println("IR button 2 unpressed");
+			if(IR_Button3) System.out.println("IR button 3 pressed");
+			else System.out.println("IR button 3 unpressed");
+			if(IR_Button4) System.out.println("IR button 4 pressed");
+			else System.out.println("IR button 4 unpressed");
+		}
+	
+		boolean pushButtonTemp;
+		if(sensorData.getBytes()[4] == '1') pushButtonTemp = true;	
+		else pushButtonTemp = false;
+		
+		if (pushButtonTemp != pushButton){
+			pushButton = pushButtonTemp;
+			if(pushButton) System.out.println("Push button pressed");
+			else System.out.println("Push button unpressed");
+		}
+		
+		
+		if(Float.parseFloat(sensorData.substring(5, 9)) != indoorTemp){
+			GUIUpdate.setIndoorTemp(Float.parseFloat(sensorData.substring(5, 9)));
+			indoorTemp = Float.parseFloat(sensorData.substring(5, 9));
+			System.out.println(Float.toString(indoorTemp));
+		}
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+				
 	}
 	
 	/**
@@ -66,34 +167,117 @@ public class Control {
 	 * 
 	 * Return: Void
 	 */
-	private void processAndroidData() {
-		// TODO
-
+	public void processAndroidData() {
+		try{
+			int port = 3000;
+			DatagramSocket socket = new DatagramSocket(port);
+			for(;;){
+				DatagramPacket packet = new DatagramPacket(new byte[1024], 1024);
+				socket.receive(packet);
+				System.out.println(new String(packet.getData()).trim());
+			}
+			
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		/*
+		sleepData = AndroidCommunication.getSleepData();
+		wakeUp = AndroidCommunication.getWakeUp();
+		bus = AndroidCommunication.getBusData();
+		currentLocation = AndroidCommunication.getCurrentLocation();
+		destination = AndroidCommunication.getDestination();
+		destinationTime = AndroidCommunication.getDestinationTime();
+		
+		
+		sleepQuality = 0;
+		timeToLeave = new Time(2, 3, 1, 3, 2, 1);
+		// TODO: Actual logic For these updates
+		//GUIUpdate.setTimeToLeave(timeToLeave);
+		//GUIUpdate.setTime(time);
+		//GUIUpdate.setSleepQuality(sleepQuality);
+		*/
 	}
 	
 	/**
 	 * Description:
-	 * Function which updates the GUI with new data
+	 * Function which puts GUI and Arduino to sleep
 	 * 
 	 * Parameters: None
 	 * 
 	 * Return: Void
 	 */
-	private void updateGUI() {
-		// TODO
+	private void sleep(){
+		GUIUpdate.toggleSleep();
+		ArduinoCommunication.toggleSleep();
+	}
 
+	/**
+	 * Description:
+	 * Function which tests GUI, Arduino and Android
+	 * 
+	 * Parameters: None
+	 * 
+	 * Return: Void
+	 */
+	private void test(){
+		GUIUpdate.testGUI();
+		ArduinoCommunication.testArduino();
+		AndroidCommunication.testAndroid();
 	}
 	
-	
-	
-	public static void main(String[] args) {
+	public static void main(String[] args){
 		Control instance = getInstance();
-		while(true){
-			instance.refreshInternetContent();
-			instance.processArduinoContent();
-			instance.processAndroidData();
-			instance.updateGUI();
-		}
-	}
+		instance.AndroidCommunication = new AndroidCommunication();
+		instance.ArduinoCommunication = new ArduinoCommunication();
+		instance.InternetCommunication = new InternetCommunication();
+		instance.GUIUpdate = new GUIUpdate();
+		for(int i=0; i<3; i++){
+		      new Thread("" + i){
+		        @SuppressWarnings("static-access")
+				public void run(){
+		          if(Thread.currentThread().getName().equals("0")){
+		        	  while(true){
+		        		  try{
+		        			  instance.refreshInternetContent();
+		        		  } catch(Exception e){ 
+		        			  System.out.println("Internet Communication Failure");
+		        			  try {
+								Thread.currentThread().sleep(5000);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+		        		  }
+		        	  }
+		          } else if(Thread.currentThread().getName().equals("1")){
+		        	  while(true){
+		        		  try{
+				      			instance.processArduinoContent();
+		        		  } catch(Exception e){ 
+		        			  System.out.println("Arduino Communication Failure");
+		        			  try {
+								Thread.currentThread().sleep(5000);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
+		        		  }
+		        	  }
+		          } else if(Thread.currentThread().getName().equals("2")){
+	        		  try{
+		        		  instance.processAndroidData();
+	        		  } catch(Exception e){ 
+	        			  System.out.println("Android Communication Failure");
+	        			  try {
+							Thread.currentThread().sleep(5000);
+						} catch (InterruptedException e1) {
+							e1.printStackTrace();
+						}
+	        		  
+		        	  }
+		          }
 
+		        }
+		      }.start();
+		}
+
+	}
 }
