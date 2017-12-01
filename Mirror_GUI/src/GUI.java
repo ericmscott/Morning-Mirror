@@ -47,34 +47,66 @@ public class GUI {
 	private int widthGap=1;
 	*/
 	public GUI() {
-		this.panel=new JPanel();
-		this.window =new JFrame();
+		this.panel = new JPanel();
+		this.window = new JFrame();
 		myFontTitle= new Font("my font", Font.PLAIN,90);
 		myFontElse= new Font("my font", Font.PLAIN,45);
 		myFontContent=new Font("my font", Font.PLAIN,20);
+		
+		
+		
 		this.titleLabel=new JLabel("Morning Mirror");
 		titleLabel.setFont(myFontTitle);
+		titleLabel.setForeground(Color.WHITE);
 		this.newsTitleLabel=new JLabel("Habs are bad");
 		newsTitleLabel.setFont(myFontElse);
+		newsTitleLabel.setForeground(Color.WHITE);
+		
+		
+		
 		this.newsContentLabel=new JTextArea("MONTREAL — It would have been a fine time for an old-fashioned bag skate, but Montreal Canadiens coach Claude Julien didn't have that option even if that was what he wanted."
 +"After closing a six-game homestand with what the coach called an embarrassing 5-4 loss to lowly Arizona followed by a 6-0 thrashing from the rival Toronto Maple Leafs, the old-school reaction would be to hold a punishing, no-sticks skate to drive home the message that such performances are unacceptable.",2,50);
 		this.newsContentLabel.setLineWrap(true);
 		this.newsContentLabel.setWrapStyleWord(true);
 		newsContentLabel.setFont(myFontContent);
+		newsContentLabel.setBackground(Color.BLACK);
+		newsContentLabel.setForeground(Color.WHITE);
+
 		this.indoorTempLabel=new JLabel("aaaaaaaaaaaaaaaaaa");
 		indoorTempLabel.setFont(myFontElse);
+		indoorTempLabel.setForeground(Color.WHITE);
+		indoorTempLabel.setText("Indoor Temp Label");
+		indoorTempLabel.setFont(myFontElse);
+		indoorTempLabel.setForeground(Color.WHITE);
+		
+		
 		this.outdoorTempLabel=new JLabel("outdoor temp");
 		outdoorTempLabel.setFont(myFontElse);
+		outdoorTempLabel.setForeground(Color.WHITE);
+		outdoorTempLabel.setText("Outdoor Temp Label");
+		outdoorTempLabel.setFont(myFontElse);
+		outdoorTempLabel.setForeground(Color.WHITE);
+		
+		
+		
 		this.timeLabel=new JLabel("time");
 		timeLabel.setFont(myFontElse);
+		timeLabel.setForeground(Color.WHITE);
 		this.timeToLeaveLabel=new JLabel("time to leave");
 		timeToLeaveLabel.setFont(myFontElse);
+		timeToLeaveLabel.setForeground(Color.WHITE);
+		
+		
+		
 		this.sleepQualityLabel=new JLabel("Sleep Quality");
 		sleepQualityLabel.setFont(myFontElse);
+		sleepQualityLabel.setForeground(Color.WHITE);
+		
+		
+		
 		this.busLabel=new JLabel("bus");
 		busLabel.setFont(myFontElse);
-		this.indoorTempLabel.setText("50");
-		indoorTempLabel.setFont(myFontElse);
+		busLabel.setForeground(Color.WHITE);
 	}
 	
 	
@@ -191,13 +223,16 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void makeLayout() {
-		panel= new JPanel(new MigLayout());
+		panel = new JPanel(new MigLayout());
 		window = new JFrame();
-		window.setSize(1920,1080 );
+		window.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		window.setUndecorated(true);
+		window.setVisible(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 	    Container cp = window.getContentPane();
 	    cp.setLayout(new MigLayout(""));
-	    
+	    cp.setBackground(Color.BLACK);
 		cp.add(titleLabel,"north, gap 375");
 		cp.add(timeLabel,"span 3 1");
 		cp.add(newsTitleLabel,"align center,span 3 1");
