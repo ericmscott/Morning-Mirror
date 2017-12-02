@@ -16,7 +16,7 @@ public class Control {
 	private String time;
 	private String timeToLeave;
 	private int sleepQuality;
-	private Bus bus;
+	private Bus bus; 
 	
 	public GUI gui;//= new GUI();
 	//gui.start
@@ -64,11 +64,11 @@ public class Control {
 		//if (temp>40f||temp<0f){
 		//	return false;
 		//}
-		//System.out.println("222");
+		
 		indoorTemp=temp;
-		//label.setText("35");
+		
 		gui.updateIndoorTempLabel(temp);
-		//System.out.println("444");
+		
 		return true;
 		//return false;
 	}

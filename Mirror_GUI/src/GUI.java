@@ -4,17 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import net.miginfocom.swing.MigLayout;
-//TODO
-// fix imports
-//import Server.News.*;
-//TODO
-//fix imports
-//import Server.Time.*;
-//TODO
-//fix imports
-//import Server.Bus.*;
-//TODO
-//fix imports
+
 
 
 public class GUI {
@@ -23,30 +13,22 @@ public class GUI {
 	private JPanel panel;
 	public JFrame window;
 	private JLabel titleLabel;
-	private JLabel newsTitleLabel;
+	private JTextArea newsTitleLabel;
 	private JTextArea newsContentLabel;
-	public JLabel indoorTempLabel;
+	private JLabel indoorTempLabel;
 	private JLabel outdoorTempLabel;
 	private JLabel outdoorWeatherLabel;
 	private JLabel timeLabel;
 	private JLabel timeToLeaveLabel;
 	private JLabel sleepQualityLabel;
 	private JLabel busLabel;
+	private JLabel nextNewsLabel;
+	private JLabel prevNewsLabel;
 	public Font myFontTitle; 
 	public Font myFontElse;
 	public Font myFontContent;
-	/*
-	private int newsHeight=1;
-	private int newsWidth=1;
-	private int timeHeight=1;
-	private int timeWidth=1;
-	private int tempHight=1;
-	private int tempWidth=1;
-	private int sleepQualityHeight=1;
-	private int sleepQualityWidth=1;
-	private int heightGap=1;
-	private int widthGap=1;
-	*/
+	private int currentColour = 0;
+	
 	public GUI() {
 		this.panel = new JPanel();
 		this.window = new JFrame();
@@ -59,15 +41,18 @@ public class GUI {
 		this.titleLabel=new JLabel("Morning Mirror");
 		titleLabel.setFont(myFontTitle);
 		titleLabel.setForeground(Color.RED);
-		this.newsTitleLabel=new JLabel("Alfredsson to be inducteed to IIHF HOF");
+		this.newsTitleLabel=new JTextArea("Alfredsson to be inducteed to IIHF HOF",2,40);
 		newsTitleLabel.setFont(myFontElse);
+		this.newsTitleLabel.setLineWrap(true);
+		this.newsTitleLabel.setWrapStyleWord(true);
 		newsTitleLabel.setForeground(Color.WHITE);
+		newsTitleLabel.setBackground(Color.BLACK);
 		
 		
 		
 		this.newsContentLabel=new JTextArea("Ottawa Senators legend Daniel Alfredsson will be among the inductees to the International Ice Hockey Federation Hall of Fame, world hockey's governing body announced on Friday."
 +"A five-time Swedish Olympian and a gold medalist at Torino 2006, Alfredsson will join Dallas Stars and Finland great Jere Lehtinen, long-time French official Philippe Lacarriere, Danish player Jesper Damgaard and Latvian president Kirovs Lipmans."
-,2,2);
+,2,40);
 		this.newsContentLabel.setLineWrap(true);
 		this.newsContentLabel.setWrapStyleWord(true);
 		newsContentLabel.setFont(myFontContent);
@@ -116,6 +101,15 @@ public class GUI {
 		this.busLabel=new JLabel("bus");
 		busLabel.setFont(myFontElse);
 		busLabel.setForeground(Color.WHITE);
+		
+		this.nextNewsLabel=new JLabel("Next Article");
+		nextNewsLabel.setFont(myFontElse);
+		nextNewsLabel.setForeground(Color.WHITE);
+		
+		this.prevNewsLabel=new JLabel("Previous Article");
+		prevNewsLabel.setFont(myFontElse);
+		prevNewsLabel.setForeground(Color.WHITE);
+		
 	}
 	
 	
@@ -132,7 +126,8 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void updateNewsHeadlineLabel(String news) {
-		newsTitleLabel.setText(news);
+		newsTitleLabel.setText(null);
+		newsTitleLabel.insert(news,0);
 		
 	}
 	public void updateNewsContentLabel(String news) {
@@ -149,11 +144,9 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void updateIndoorTempLabel(float indoorTemp) {
-		//System.out.println("333");
-		//System.out.println(indoorTempLabel);
+		
 		indoorTempLabel.setText("Indoor Temperature: "+Float.toString(indoorTemp)+" degree(s) Celsius");
-		//indoorTempLabel.paintImmediately(this.indoorTempLabel.getVisibleRect());
-//		window.repaint();
+		
 	}
 	/**
 	 * Description:
@@ -213,6 +206,43 @@ public class GUI {
 	public void updateBusLabel(Bus bus) {
 		busLabel.setText(bus.toString());
 	}
+	
+	public void changeColour(){
+		if(currentColour == 0){
+			window.getContentPane().setBackground(Color.BLUE);
+			newsTitleLabel.setBackground(Color.BLUE);
+			newsContentLabel.setBackground(Color.BLUE);
+			currentColour++;
+		} else if(currentColour == 1){
+			window.getContentPane().setBackground(Color.GREEN);
+			newsTitleLabel.setBackground(Color.GREEN);
+			newsContentLabel.setBackground(Color.GREEN);
+			currentColour++;
+		} else if(currentColour == 2){
+			window.getContentPane().setBackground(Color.ORANGE);
+			newsTitleLabel.setBackground(Color.ORANGE);
+			newsContentLabel.setBackground(Color.ORANGE);
+			currentColour++;
+		} else if(currentColour == 3){
+			window.getContentPane().setBackground(Color.PINK);
+			newsTitleLabel.setBackground(Color.PINK);
+			newsContentLabel.setBackground(Color.PINK);
+			currentColour++;
+		} else if(currentColour == 4){
+			window.getContentPane().setBackground(Color.CYAN);
+			newsTitleLabel.setBackground(Color.CYAN);
+			newsContentLabel.setBackground(Color.CYAN);
+			currentColour++;
+		} else {
+			window.getContentPane().setBackground(Color.BLACK);
+			newsTitleLabel.setBackground(Color.BLACK);
+			newsContentLabel.setBackground(Color.BLACK);
+			currentColour = 0;
+		}
+
+	}
+
+	
 	// Build GUI	//TODO
 	/**
 	 * Description:
@@ -247,39 +277,36 @@ public class GUI {
 	    cp.setLayout(new MigLayout(""));
 	    cp.setBackground(Color.BLACK);
 		cp.add(titleLabel,"north");
-		//cp.add(newsContentLabel," grow,south");
+		
 		cp.add(timeLabel,"wrap");
-		//cp.add(newsTitleLabel,"align center, span 2 1,wrap");
-		//TODO 
-		//fix so it reads variables 
+		
 		cp.add(indoorTempLabel,"wrap");
-		//cp.add(timeToLeaveLabel, "span 2 1");
-		//cp.add(newsContentLabel,"align center,span 3 3,wrap");
+		
 
 		cp.add(outdoorTempLabel,"wrap");
 		cp.add(outdoorWeatherLabel,"wrap");
 		cp.add(timeToLeaveLabel, "span 2 1,wrap");
-		cp.add(newsTitleLabel,"gapy 40sp, span 2 1,wrap");
-		cp.add(newsContentLabel," grow");
-		//cp.add(newsContentLabel,"align center,span 3 3,south");
+		//cp.add(newsTitleLabel,"span 2 1,wrap");
+		cp.add(newsTitleLabel,"gapy 40sp, span 2 1");
+		cp.add(prevNewsLabel,"gapx 15sp");
+		cp.add(nextNewsLabel,"gapx 10sp,wrap");
+		cp.add(newsContentLabel);
+		//cp.add(prevNewsLabel,"gapx 20sp");
+		//cp.add(nextNewsLabel,"gapx 20sp");
+		
 		//cp.add(busLabel);
 		//cp.add(sleepQualityLabel);
-		//window.pack();
+		
 	    window.setVisible(true);
 		
 		
 	}
 	public void start()
 	{
-		//JFrame window = new JFrame();
-		//GUI MirrorGUI = new GUI();
-		//MirrorGUI.updateSleepQualityLabel(5);
+		
 //		MirrorGUI.
 		makeLayout();
 //		MirrorGUI.
-		updateSleepQualityLabel(5);
-		//window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	    //Container cp = window.getContentPane();
-	    //MirrorGUI.updateIndoorTempLabel(5.0f);
+		
 	}
 }

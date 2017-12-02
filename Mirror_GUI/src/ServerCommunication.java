@@ -1,6 +1,7 @@
 import java.net.*;
 import java.util.Date;
 public class ServerCommunication {
+	private static boolean alarmMode= false;
 	//TODO
 	/**
 	 * Description:
@@ -73,6 +74,9 @@ public class ServerCommunication {
 		        						break;
 		        						case '5': serverCom.updateOutdoorWeather(s.substring(1));
 		        						break;
+		        						case '6': serverCom.gui.changeColour();
+		        						break;
+		        						case '7': alarmMode=!alarmMode;
 		        						}
 
 
@@ -103,7 +107,7 @@ public class ServerCommunication {
 		          } else if(Thread.currentThread().getName().equals("1")){
 		        	  while(true){
 		        		  try{
-
+		        			  if(alarmMode) serverCom.gui.changeColour();
 		        			  serverCom.updateTime((new Date()).toString());
 		        			  try {
 									Thread.currentThread().sleep(1000);
