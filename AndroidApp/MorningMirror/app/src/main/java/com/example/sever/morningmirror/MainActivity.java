@@ -1,27 +1,21 @@
  package com.example.sever.morningmirror;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 
  public class MainActivity extends AppCompatActivity {
-
+     //when the App first starts, this method is run.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,73 +25,60 @@ import java.net.UnknownHostException;
         ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#34c3ad"));
         getSupportActionBar().setBackgroundDrawable(colorDrawable);
 
-        //create listener for button
+        //create event listener for button
         final Button button = (Button)findViewById(R.id.button);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                TextView tv = (TextView)findViewById(R.id.textView);
+                //when the button is clicked, send udp message to server
                 runUdpClient();
+                tv.setText("Alarm Time has been sent to Morning Mirror.");
             }
         });
-
-
-
     }
     @TargetApi(23)
-    private String getTime() {
+    /*
+    This function gets the time from the TimePicker and converts it to bytes.
+     */
+    private byte[] getTime() {
         final TimePicker timePicker = (TimePicker)findViewById(R.id.timePicker);
-        String time = "";
-        String am_pm = (timePicker.getHour() < 12) ? "AM" : "PM";
-        int hour = timePicker.getHour();
-        int min = timePicker.getMinute();
-        if(am_pm.equals("PM")) {
-            if(timePicker.getHour()==12)
-                time+= Integer.toString(hour); //change so not using 24 hour clock
-            else
-                time+= Integer.toString(hour-12); //change so not using 24 hour clock
-        }
-        else{
-            if(timePicker.getHour()==0)
-                time+= Integer.toString(12); //change so not using 24 hour clock
-            else
-                time+= Integer.toString(hour); //change so not using 24 hour clock
 
-        }
-
-
-        time+=':';
-        if(min< 10)
-            time += '0';
-
-        time+= Integer.toString(min);
-        time+= am_pm;
+        byte time[] = new byte[2];
+        time[0] = (byte)timePicker.getHour();
+        time[1] = (byte)timePicker.getMinute();
 
         return time;
     }
+
     private static final int UDP_SERVER_PORT = 3000;
+    /*
+    This function opens a socket, and sends a message to the IP of the RPi Server.
+    The message contains the alarm time the user wants to wake up.
+    */
     private void runUdpClient()  {
-        String udpMsg =getTime();
+        //get Time and store it in byte array
+        byte udpMsg[] =getTime();
+
         DatagramSocket socket = null;
         try {
+            //create new socket and put time into datagram packet
             socket = new DatagramSocket();
             InetAddress serverAddr = InetAddress.getByName("172.20.10.7");
             DatagramPacket dp;
-            dp = new DatagramPacket(udpMsg.getBytes(), udpMsg.length(), serverAddr, UDP_SERVER_PORT);
+            dp = new DatagramPacket(udpMsg,udpMsg.length, serverAddr, UDP_SERVER_PORT);
+            //send packet
             socket.send(dp);
-        }catch (SocketException e) {
-            e.printStackTrace();
-        }catch (UnknownHostException e) {
-            e.printStackTrace();
+
         }catch (IOException e) {
-            e.printStackTrace();
-        }catch (Exception e) {
+            //catch exceptions
             e.printStackTrace();
         }finally {
+            //close socket
             if (socket != null) {
                 socket.close();
             }
         }
     }
-
-
 }
