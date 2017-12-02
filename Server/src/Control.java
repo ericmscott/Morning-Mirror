@@ -1,4 +1,6 @@
 import java.net.*;
+import java.util.Calendar;
+import java.util.Date;
 public class Control {
 	
 	// Singleton Design Pattern
@@ -25,7 +27,7 @@ public class Control {
 	private Location currentLocation;
 	private SleepData sleepData;
 
-	private String outdoorTemp;
+	private Weather outdoorTemp;
 	private float indoorTemp;
 	private int sleepQuality;
 	private boolean sleepMode;
@@ -50,15 +52,16 @@ public class Control {
 	 */
 	public void refreshInternetContent() {
 		
-		String tempOutdoorTemp = InternetCommunication.getWeather();
-		System.out.println(tempOutdoorTemp);
-		if(!tempOutdoorTemp.equals(outdoorTemp)){
+		Weather tempOutdoorTemp = InternetCommunication.getWeather();
+		if(outdoorTemp == null || !tempOutdoorTemp.getWeatherConditions().equals(outdoorTemp.getWeatherConditions()) || !tempOutdoorTemp.getTemperature().equals(outdoorTemp.getTemperature())){
+			System.out.println(tempOutdoorTemp.getTemperature());
+			System.out.println(tempOutdoorTemp.getWeatherConditions());
 			outdoorTemp = tempOutdoorTemp;
 			GUIUpdate.setOutdoorTemp(outdoorTemp);
 		}
 		
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(150);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -70,7 +73,7 @@ public class Control {
 			System.out.println("Content: " + news.getContent());
 		}
 			
-		if(internetCount == 30){
+		if(internetCount == 20){
 			currentArticle++;
 			internetCount = 0;
 		} else{
@@ -78,7 +81,7 @@ public class Control {
 		}
 
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(150);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -119,9 +122,15 @@ public class Control {
 		
 		if((IR_Button1Temp != IR_Button1) || (IR_Button2Temp != IR_Button2) || (IR_Button3Temp != IR_Button3) || (IR_Button4Temp != IR_Button4)){
 			IR_Button1 = IR_Button1Temp;
-			if(IR_Button1) currentArticle++;
+			if(IR_Button1){ 
+				currentArticle++;
+				internetCount = 0;
+			}
 			IR_Button2 = IR_Button2Temp;
-			if(IR_Button2) currentArticle--;
+			if(IR_Button2){ 
+				currentArticle--;
+				internetCount = 0;
+			}
 			IR_Button3 = IR_Button3Temp;
 			IR_Button4 = IR_Button4Temp;
 			if(IR_Button1) System.out.println("IR button 1 pressed");
@@ -152,7 +161,7 @@ public class Control {
 		}
 		
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(300);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -174,6 +183,8 @@ public class Control {
 			for(;;){
 				DatagramPacket packet = new DatagramPacket(new byte[1024], 1024);
 				socket.receive(packet);
+				//int hour = packet.getData()[0];
+				//int hour = (new Calendar()).HOUR_OF_DAY;
 				System.out.println(new String(packet.getData()).trim());
 			}
 			

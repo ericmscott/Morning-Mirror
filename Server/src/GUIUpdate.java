@@ -24,8 +24,9 @@ public class GUIUpdate {
 	 * 
 	 * Return: Void
 	 */
-	public void setOutdoorTemp(String outdoorTemp){
-		sender.sendMessage("2" + outdoorTemp);
+	public void setOutdoorTemp(Weather weather){
+		sender.sendMessage("2" + weather.getTemperature());
+		sender.sendMessage("5" + weather.getWeatherConditions());
 	}
 	
 	/**
