@@ -13,7 +13,7 @@ public class ServerCommunication {
 	public void reciveRequest() {
 		//TODO
 	}
-	private final static int PACKETSIZE = 100 ;
+	private final static int PACKETSIZE = 1024 ;
 
 	public static void main( String args[] )
 	{ 
@@ -68,9 +68,11 @@ public class ServerCommunication {
 		        						case '2': serverCom.updateOutdoorTemp(s.substring(1));
 		        						break;
 		        						case '3': serverCom.updateNewsHeadline(s.substring(1));
-		        							
+		        						break;	
 		        						case '4': serverCom.updateNewsContent(s.substring(1));
-		        						
+		        						break;
+		        						case '5': serverCom.updateOutdoorWeather(s.substring(1));
+		        						break;
 		        						}
 
 

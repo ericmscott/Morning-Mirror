@@ -27,6 +27,7 @@ public class GUI {
 	private JTextArea newsContentLabel;
 	public JLabel indoorTempLabel;
 	private JLabel outdoorTempLabel;
+	private JLabel outdoorWeatherLabel;
 	private JLabel timeLabel;
 	private JLabel timeToLeaveLabel;
 	private JLabel sleepQualityLabel;
@@ -50,22 +51,23 @@ public class GUI {
 		this.panel = new JPanel();
 		this.window = new JFrame();
 		myFontTitle= new Font("my font", Font.PLAIN,90);
-		myFontElse= new Font("my font", Font.PLAIN,45);
-		myFontContent=new Font("my font", Font.PLAIN,20);
+		myFontElse= new Font("my font", Font.PLAIN,35);
+		myFontContent=new Font("my font", Font.PLAIN,25);
 		
 		
 		
 		this.titleLabel=new JLabel("Morning Mirror");
 		titleLabel.setFont(myFontTitle);
-		titleLabel.setForeground(Color.WHITE);
-		this.newsTitleLabel=new JLabel("Habs are bad");
+		titleLabel.setForeground(Color.RED);
+		this.newsTitleLabel=new JLabel("Alfredsson to be inducteed to IIHF HOF");
 		newsTitleLabel.setFont(myFontElse);
 		newsTitleLabel.setForeground(Color.WHITE);
 		
 		
 		
-		this.newsContentLabel=new JTextArea("MONTREAL — It would have been a fine time for an old-fashioned bag skate, but Montreal Canadiens coach Claude Julien didn't have that option even if that was what he wanted."
-+"After closing a six-game homestand with what the coach called an embarrassing 5-4 loss to lowly Arizona followed by a 6-0 thrashing from the rival Toronto Maple Leafs, the old-school reaction would be to hold a punishing, no-sticks skate to drive home the message that such performances are unacceptable.",2,50);
+		this.newsContentLabel=new JTextArea("Ottawa Senators legend Daniel Alfredsson will be among the inductees to the International Ice Hockey Federation Hall of Fame, world hockey's governing body announced on Friday."
++"A five-time Swedish Olympian and a gold medalist at Torino 2006, Alfredsson will join Dallas Stars and Finland great Jere Lehtinen, long-time French official Philippe Lacarriere, Danish player Jesper Damgaard and Latvian president Kirovs Lipmans."
+,2,2);
 		this.newsContentLabel.setLineWrap(true);
 		this.newsContentLabel.setWrapStyleWord(true);
 		newsContentLabel.setFont(myFontContent);
@@ -87,12 +89,19 @@ public class GUI {
 		outdoorTempLabel.setFont(myFontElse);
 		outdoorTempLabel.setForeground(Color.WHITE);
 		
+		this.outdoorWeatherLabel=new JLabel("Weather");
+		outdoorWeatherLabel.setFont(myFontElse);
+		outdoorWeatherLabel.setForeground(Color.WHITE);
+		outdoorWeatherLabel.setText("Outdoor Weather Label");
+		outdoorWeatherLabel.setFont(myFontElse);
+		outdoorWeatherLabel.setForeground(Color.WHITE);
+		
 		
 		
 		this.timeLabel=new JLabel("time");
 		timeLabel.setFont(myFontElse);
 		timeLabel.setForeground(Color.WHITE);
-		this.timeToLeaveLabel=new JLabel("time to leave");
+		this.timeToLeaveLabel=new JLabel("Leave in 10 minutes to catch your bus");
 		timeToLeaveLabel.setFont(myFontElse);
 		timeToLeaveLabel.setForeground(Color.WHITE);
 		
@@ -128,7 +137,8 @@ public class GUI {
 	}
 	public void updateNewsContentLabel(String news) {
 		
-		newsContentLabel.setText(news);
+		newsContentLabel.setText(null);
+		newsContentLabel.insert(news,0);
 	}
 	/**
 	 * Description:
@@ -139,10 +149,10 @@ public class GUI {
 	 * Return: Void
 	 */
 	public void updateIndoorTempLabel(float indoorTemp) {
-		System.out.println("333");
-		System.out.println(indoorTempLabel);
-		indoorTempLabel.setText("indoor Temp: "+Float.toString(indoorTemp));
-		indoorTempLabel.paintImmediately(this.indoorTempLabel.getVisibleRect());
+		//System.out.println("333");
+		//System.out.println(indoorTempLabel);
+		indoorTempLabel.setText("Indoor Temperature: "+Float.toString(indoorTemp)+" degree(s) Celsius");
+		//indoorTempLabel.paintImmediately(this.indoorTempLabel.getVisibleRect());
 //		window.repaint();
 	}
 	/**
@@ -155,6 +165,9 @@ public class GUI {
 	 */
 	public void updateOutdoorTempLabel(String  temp) {
 		outdoorTempLabel.setText(temp);
+	}
+	public void updateOutdoorWeatherLabel(String  weather) {
+		outdoorWeatherLabel.setText(weather);
 	}
 	/**
 	 * Description:
@@ -233,10 +246,10 @@ public class GUI {
 	    Container cp = window.getContentPane();
 	    cp.setLayout(new MigLayout(""));
 	    cp.setBackground(Color.BLACK);
-		cp.add(titleLabel,"north, gap 375");
-		cp.add(newsContentLabel,"align center,span 3 3,south");
-		cp.add(timeLabel);
-		cp.add(newsTitleLabel,"align center, span 2 1,wrap");
+		cp.add(titleLabel,"north");
+		//cp.add(newsContentLabel," grow,south");
+		cp.add(timeLabel,"wrap");
+		//cp.add(newsTitleLabel,"align center, span 2 1,wrap");
 		//TODO 
 		//fix so it reads variables 
 		cp.add(indoorTempLabel,"wrap");
@@ -244,7 +257,10 @@ public class GUI {
 		//cp.add(newsContentLabel,"align center,span 3 3,wrap");
 
 		cp.add(outdoorTempLabel,"wrap");
+		cp.add(outdoorWeatherLabel,"wrap");
 		cp.add(timeToLeaveLabel, "span 2 1,wrap");
+		cp.add(newsTitleLabel,"gapy 40sp, span 2 1,wrap");
+		cp.add(newsContentLabel," grow");
 		//cp.add(newsContentLabel,"align center,span 3 3,south");
 		//cp.add(busLabel);
 		//cp.add(sleepQualityLabel);
