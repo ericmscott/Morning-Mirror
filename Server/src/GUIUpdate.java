@@ -45,6 +45,30 @@ public class GUIUpdate {
 	
 	/**
 	 * Description:
+	 * Function which toggles the GUI background colour
+	 * 
+	 * Parameters: Void
+	 * 
+	 * Return: Void
+	 */
+	public void changeColour(){
+		sender.sendMessage("6");
+	}
+	
+	/**
+	 * Description:
+	 * Function which toggles the GUI background colour
+	 * 
+	 * Parameters: Void
+	 * 
+	 * Return: Void
+	 */
+	public void toggleAlarmMode(){
+		sender.sendMessage("7");
+	}
+	
+	/**
+	 * Description:
 	 * Function which updates the GUI with new data
 	 * 
 	 * Parameters: 
