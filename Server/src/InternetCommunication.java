@@ -1,3 +1,7 @@
+/**
+ * @author: Christopher Morency
+ */
+
 import com.jaunt.*;
 import java.io.*;
 

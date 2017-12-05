@@ -1,3 +1,6 @@
+/**
+ * @author: Christopher Morency
+ */
 
 public class ArduinoCommunication {
 	SerialConnection s;
