@@ -1,3 +1,6 @@
+/**
+ * @author: Christopher Morency
+ */
 import com.pi4j.io.serial.Serial;
 import com.pi4j.io.serial.SerialFactory;
 import com.pi4j.io.serial.SerialPortException;

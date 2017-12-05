@@ -1,3 +1,7 @@
+/**
+ * @author: Christopher Morency
+ */
+
 import java.net.*;
 import java.util.Calendar;
 public class Control {
