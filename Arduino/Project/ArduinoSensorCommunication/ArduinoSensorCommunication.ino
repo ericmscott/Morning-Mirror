@@ -1,4 +1,9 @@
-//last updated: November 27, 2017
+//Author: Sever Hussein
+//last updated: Dec 5, 2017
+//Arduino works off of one file, so instead of multiple classes,
+//it has one large class with a main loop that runs forever.
+//That's how it's structured and is the reason why I didn't modularize
+//into seperate classes.
 
 String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
@@ -169,21 +174,16 @@ void loop() {
   if(getPushButtonState() == 1)
     buttonFlag = true;
     
-  //if the Arduino is in sleep mode don't spend time
-  //checking if the IR buttons have been pressed
-  //if(sleepMode == false){
-    //check if IR sensors have noticed something
-    IRButton1 = getIRButtonState(0);
-    IRButton2 = getIRButtonState(1);
+  //update IR buttons
+  IRButton1 = getIRButtonState(0);
+  IRButton2 = getIRButtonState(1);
 
-    //set a flag if the IR sensors have noticed something
-    if(IRButton1 == true)
-      irFlag1 = true;
-    if(IRButton2 == true)
-      irFlag2 = true;
+  //set a flag if the IR sensors have noticed something
+  if(IRButton1 == true)
+    irFlag1 = true;
+  if(IRButton2 == true)
+    irFlag2 = true;
 
-  //}
-   
 }
 //this implementation looks at IR sensors individually
 //get latest version of IR buttons

@@ -1,4 +1,5 @@
- package com.example.sever.morningmirror;
+//Author: Sever Hussein
+package com.example.sever.morningmirror;
 
 import android.annotation.TargetApi;
 import android.graphics.Color;
