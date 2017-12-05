@@ -3,7 +3,7 @@ README.txt
 MORNING MIRROR 
 Christopher Morency 100882303
 Sever Hussein 100818967
-Eric Scott ???
+Eric Scott 101015358
 
 Code is all in the Develop Branch on the Github, within the respective folders below.
 
