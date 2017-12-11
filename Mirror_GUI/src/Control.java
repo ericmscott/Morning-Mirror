@@ -12,10 +12,11 @@ public class Control {
 	private String newsContent;
 	private float indoorTemp;
 	private String outdoorTemp;
+	private String outdoorWeather;
 	private String time;
 	private String timeToLeave;
 	private int sleepQuality;
-	private Bus bus;
+	private Bus bus; 
 	
 	public GUI gui;//= new GUI();
 	//gui.start
@@ -63,11 +64,11 @@ public class Control {
 		//if (temp>40f||temp<0f){
 		//	return false;
 		//}
-		System.out.println("222");
+		
 		indoorTemp=temp;
-		//label.setText("35");
+		
 		gui.updateIndoorTempLabel(temp);
-		System.out.println("444");
+		
 		return true;
 		//return false;
 	}
@@ -86,6 +87,15 @@ public class Control {
 		
 		outdoorTemp= temp;
 		gui.updateOutdoorTempLabel(temp);
+		return true;
+	}
+	public boolean updateOutdoorWeather(String weather) {
+		//if (temp>40f||temp<-40f){
+		//	return false;
+	//	}
+		
+		outdoorWeather= weather;
+		gui.updateOutdoorWeatherLabel(weather);
 		return true;
 	}
 	/**

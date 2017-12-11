@@ -1,4 +1,9 @@
+/**
+ * @author: Christopher Morency
+ */
+
 import java.net.*;
+import java.util.Calendar;
 public class Control {
 	
 	// Singleton Design Pattern
@@ -15,17 +20,18 @@ public class Control {
 	private InternetCommunication InternetCommunication;
 	private GUIUpdate GUIUpdate;
 	
-	
+	private Calendar calendar;
 	private String time;
 	private Time destinationTime;
 	private Time timeToLeave;
-	private Time wakeUp;
+	private int wakeUpMinute = 61;
+	private int wakeUpHour = 13;
 	private News news;
 	private Bus bus;
 	private Location currentLocation;
 	private SleepData sleepData;
 
-	private String outdoorTemp;
+	private Weather outdoorTemp;
 	private float indoorTemp;
 	private int sleepQuality;
 	private boolean sleepMode;
@@ -34,7 +40,7 @@ public class Control {
 	private boolean IR_Button3;
 	private boolean IR_Button4;
 	private boolean pushButton;
-	private boolean buzzer;
+	private boolean buzzer = false;
 	private String destination;
 	private int currentArticle = 0;
 	int internetCount;
@@ -50,27 +56,28 @@ public class Control {
 	 */
 	public void refreshInternetContent() {
 		
-		String tempOutdoorTemp = InternetCommunication.getWeather();
-		System.out.println(tempOutdoorTemp);
-		if(!tempOutdoorTemp.equals(outdoorTemp)){
+		Weather tempOutdoorTemp = InternetCommunication.getWeather();
+		if(outdoorTemp == null || !tempOutdoorTemp.getWeatherConditions().equals(outdoorTemp.getWeatherConditions()) || !tempOutdoorTemp.getTemperature().equals(outdoorTemp.getTemperature())){
+			System.out.println(tempOutdoorTemp.getTemperature());
+			System.out.println(tempOutdoorTemp.getWeatherConditions());
 			outdoorTemp = tempOutdoorTemp;
 			GUIUpdate.setOutdoorTemp(outdoorTemp);
 		}
 		
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(150);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		News temp2 = InternetCommunication.getNews(currentArticle);
-		//if ( news != null && temp2 != news){ //TODO: Fix this (add isEqual to news or whatever)
-			//GUIUpdate.setNews(temp2);
+		if ( news == null || !temp2.getHeadline().equals(news.getHeadline())){
 			news = temp2;
+			GUIUpdate.setNews(news);
 			System.out.println("Headline: " + news.getHeadline());
 			System.out.println("Content: " + news.getContent());
-		//}
+		}
 			
-		if(internetCount == 30){
+		if(internetCount == 100){
 			currentArticle++;
 			internetCount = 0;
 		} else{
@@ -78,18 +85,10 @@ public class Control {
 		}
 
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(150);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
-		/*
-		Bus temp3 = InternetCommunication.getBus(bus.getBusNumber());
-		if (bus != null && temp3 != bus){ //TODO: Fix this (add isEqual to news or whatever)
-			GUIUpdate.setBusData(temp3);
-			bus = temp3;
-		}*/
-
 	}
 	
 	/**
@@ -119,9 +118,15 @@ public class Control {
 		
 		if((IR_Button1Temp != IR_Button1) || (IR_Button2Temp != IR_Button2) || (IR_Button3Temp != IR_Button3) || (IR_Button4Temp != IR_Button4)){
 			IR_Button1 = IR_Button1Temp;
-			if(IR_Button1) currentArticle++;
+			if(IR_Button1){ 
+				currentArticle++;
+				internetCount = 0;
+			}
 			IR_Button2 = IR_Button2Temp;
-			if(IR_Button2) currentArticle--;
+			if(IR_Button2){ 
+				currentArticle--;
+				internetCount = 0;
+			}
 			IR_Button3 = IR_Button3Temp;
 			IR_Button4 = IR_Button4Temp;
 			if(IR_Button1) System.out.println("IR button 1 pressed");
@@ -140,6 +145,12 @@ public class Control {
 		
 		if (pushButtonTemp != pushButton){
 			pushButton = pushButtonTemp;
+			if(buzzer){
+				ArduinoCommunication.toggleBuzzer();
+				GUIUpdate.toggleAlarmMode();
+				buzzer = false;
+			}
+			else if (pushButton) GUIUpdate.changeColour();
 			if(pushButton) System.out.println("Push button pressed");
 			else System.out.println("Push button unpressed");
 		}
@@ -150,13 +161,22 @@ public class Control {
 			indoorTemp = Float.parseFloat(sensorData.substring(5, 9));
 			System.out.println(Float.toString(indoorTemp));
 		}
+
+		// Check whether to set buzzer
+		if(!buzzer && wakeUpHour == Calendar.getInstance().get(Calendar.HOUR_OF_DAY) && wakeUpMinute == Calendar.getInstance().get(Calendar.MINUTE) ){
+			ArduinoCommunication.toggleBuzzer();
+			GUIUpdate.toggleAlarmMode();
+			buzzer = true;
+			wakeUpMinute = 61;
+			wakeUpHour = 13;
+		}
+		
 		
 		try {
-			Thread.sleep(3000);
+			Thread.sleep(300);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
-				
+		}		
 	}
 	
 	/**
@@ -174,28 +194,14 @@ public class Control {
 			for(;;){
 				DatagramPacket packet = new DatagramPacket(new byte[1024], 1024);
 				socket.receive(packet);
-				System.out.println(new String(packet.getData()).trim());
+				wakeUpHour = packet.getData()[0];
+				wakeUpMinute = packet.getData()[1];
+				System.out.println("wakeUpHour: " + wakeUpHour + "\nwakeUpMinute: " + wakeUpMinute);
 			}
 			
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		/*
-		sleepData = AndroidCommunication.getSleepData();
-		wakeUp = AndroidCommunication.getWakeUp();
-		bus = AndroidCommunication.getBusData();
-		currentLocation = AndroidCommunication.getCurrentLocation();
-		destination = AndroidCommunication.getDestination();
-		destinationTime = AndroidCommunication.getDestinationTime();
-		
-		
-		sleepQuality = 0;
-		timeToLeave = new Time(2, 3, 1, 3, 2, 1);
-		// TODO: Actual logic For these updates
-		//GUIUpdate.setTimeToLeave(timeToLeave);
-		//GUIUpdate.setTime(time);
-		//GUIUpdate.setSleepQuality(sleepQuality);
-		*/
 	}
 	
 	/**

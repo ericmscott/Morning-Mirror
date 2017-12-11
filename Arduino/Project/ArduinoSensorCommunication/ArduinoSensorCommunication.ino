@@ -1,4 +1,9 @@
-//last updated: November 27, 2017
+//Author: Sever Hussein
+//last updated: Dec 5, 2017
+//Arduino works off of one file, so instead of multiple classes,
+//it has one large class with a main loop that runs forever.
+//That's how it's structured and is the reason why I didn't modularize
+//into seperate classes.
 
 String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
@@ -30,7 +35,7 @@ boolean irFlag2=false;
 boolean buttonFlag = false;
 
 //threshold to determine if IR receiver has sensed something
-const int irThreshold = 600;
+const int irThreshold = 800;
 
 //boolean to determine if in power saving mode or regular mode
 boolean sleepMode = false;
@@ -44,9 +49,8 @@ boolean buzzerState = false;
 void setup() {
   //debugging LEDs
   //blue led
-  //pinMode(7, OUTPUT);
-  //green led
-  //pinMode(2, OUTPUT);
+  pinMode(13, OUTPUT);
+
   
   // Set buzzer - pin 3 as an output
   pinMode(buzzerPin, OUTPUT);
@@ -70,6 +74,7 @@ void setup() {
   digitalWrite(irLedPin2, 1);
   digitalWrite(ir1PowerPin, 1);
   digitalWrite(ir2PowerPin, 1);
+  
 }
 
 /*
@@ -112,13 +117,19 @@ void loop() {
     }
     else if(inputString == "2")
     {
+      
       //toggle the Buzzer if the command from server is "2"
-      toggleBuzzer();
+      if(buzzerState == true)
+        buzzerState = false;
+      else
+        buzzerState = true;
 
+      
       //send message back to server to acknowledge request to toggle buzzer
       Serial.print("ack");
       //flag that indicates message has been sent to server
       complete = 1;
+
     }
     else if(inputString=="3")
     {
@@ -155,26 +166,24 @@ void loop() {
     //set complete back to 0
     complete = 0;
   }
-
+  
+  if(buzzerState == true)
+      toggleBuzzer();
+  
   //check if button is being pressed
   if(getPushButtonState() == 1)
     buttonFlag = true;
     
-  //if the Arduino is in sleep mode don't spend time
-  //checking if the IR buttons have been pressed
-  //if(sleepMode == false){
-    //check if IR sensors have noticed something
-    IRButton1 = getIRButtonState(0);
-    IRButton2 = getIRButtonState(1);
+  //update IR buttons
+  IRButton1 = getIRButtonState(0);
+  IRButton2 = getIRButtonState(1);
 
-    //set a flag if the IR sensors have noticed something
-    if(IRButton1 == true)
-      irFlag1 = true;
-    if(IRButton2 == true)
-      irFlag2 = true;
+  //set a flag if the IR sensors have noticed something
+  if(IRButton1 == true)
+    irFlag1 = true;
+  if(IRButton2 == true)
+    irFlag2 = true;
 
-  //}
-   
 }
 //this implementation looks at IR sensors individually
 //get latest version of IR buttons
@@ -244,8 +253,7 @@ String getTemperature() {
  * If the server sends a message to toggle the buzzer then this method is called.
  * It toggles the buzzer between on and off to simulate an alarm clock.
  */
-boolean toggleBuzzer(){
-  buzzerState = true;
+void toggleBuzzer(){
   int cycle = 0;
   if( cycle < 5){
     tone(buzzerPin, 4500); // Send 5KHz sound signal...
@@ -254,7 +262,7 @@ boolean toggleBuzzer(){
     delay(500);        // ...for 1sec
     cycle++;
   }
-  return buzzerState;
+  
 }
 
 /*

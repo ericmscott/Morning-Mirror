@@ -1,3 +1,7 @@
+/**
+ * @author: Christopher Morency
+ */
+
 import static org.easymock.EasyMock.*;
 import org.easymock.EasyMockRule;
 import org.easymock.TestSubject;

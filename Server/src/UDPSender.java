@@ -1,3 +1,7 @@
+/**
+ * @author: Christopher Morency
+ */
+
 import java.net.*;
 
 public class UDPSender {

@@ -1,6 +1,6 @@
 const int buzzer = 3; //buzzer to arduino pin 9
 
-
+int i = 0;
 void setup(){
  
   pinMode(buzzer, OUTPUT); // Set buzzer - pin 9 as an output
@@ -8,12 +8,12 @@ void setup(){
 }
 
 void loop(){
- int i = 0;
+ 
  if( i < 5){
-  tone(buzzer, 5000); // Send 5KHz sound signal...
-  delay(1000);        // ...for 1 sec
+  tone(buzzer, 4500); // Send 5KHz sound signal...
+  delay(100);        // ...for 1 sec
   noTone(buzzer);     // Stop sound...
-  delay(1000);        // ...for 1sec
+  delay(100);        // ...for 1sec
   i++;
  }
   

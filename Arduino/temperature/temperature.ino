@@ -1,5 +1,5 @@
 //TMP36 Pin Variables
-int sensorPin = 0; //the analog pin the TMP36's Vout (sense) pin is connected to
+int sensorPin = 5; //the analog pin the TMP36's Vout (sense) pin is connected to
                         //the resolution is 10 mV / degree centigrade with a
                         //500 mV offset to allow for negative temperatures
  
@@ -26,8 +26,8 @@ void loop()                     // run over and over again
  Serial.print(temperatureC); Serial.println(" degrees C");
  
  // now convert to Fahrenheit
- float temperatureF = (temperatureC * 9.0 / 5.0) + 32.0;
- Serial.print(temperatureF); Serial.println(" degrees F");
+ //float temperatureF = (temperatureC * 9.0 / 5.0) + 32.0;
+ //Serial.print(temperatureF); Serial.println(" degrees F");
  
  delay(1000);                                     //waiting a second
 }

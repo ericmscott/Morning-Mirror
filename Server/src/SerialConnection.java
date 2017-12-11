@@ -1,3 +1,6 @@
+/**
+ * @author: Christopher Morency
+ */
 import com.pi4j.io.serial.Serial;
 import com.pi4j.io.serial.SerialFactory;
 import com.pi4j.io.serial.SerialPortException;
@@ -15,28 +18,27 @@ public class SerialConnection {
     public String payload;
     public String request;
     public static int received = 1;
+    public Serial serial;
     
-
-    public void request(String req){
+    public SerialConnection(){
+        this.serial = SerialFactory.createInstance();
+        
+        serial.addListener(event -> {
+            // print out the data received to the console
+	            try {
+	                payload = event.getAsciiString();
+	                System.out.println(payload);
+	                received = 1;
+	            } catch (IOException ioe) {
+	                throw new RuntimeException(ioe);
+	            }
+        });
+        
         String port = System.getProperty("serial.port", "/dev/ttyACM0");
         int br = Integer.parseInt(System.getProperty("baud.rate", "9600"));
         // create an instance of the serial communications class
         // create and register the serial data listener
-        final Serial serial = SerialFactory.createInstance();
         
-        serial.addListener(event -> {
-            // print out the data received to the console
-            try {
-                payload = event.getAsciiString();
-                System.out.println(payload);
-                received = 1;
-                
-                return;
-            } catch (IOException ioe) {
-                throw new RuntimeException(ioe);
-            }
-        });
-
         try {
             try {
                 serial.open(port, br);
@@ -47,7 +49,14 @@ public class SerialConnection {
                 Thread.sleep(2500);
             } catch (InterruptedException e) {
             }
-
+        } catch (SerialPortException ex) {
+            System.out.println(" ==>> SERIAL SETUP FAILED : " + ex.getMessage());
+            return;
+        }
+        
+    }
+    
+    public void request(String req){
             try {
                 serial.write(req);
             } catch (IllegalStateException ex) {
@@ -63,15 +72,6 @@ public class SerialConnection {
                 } catch (InterruptedException e) {
                 }
             }
-            try {
-                serial.close();
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-        } catch (SerialPortException ex) {
-            System.out.println(" ==>> SERIAL SETUP FAILED : " + ex.getMessage());
-            return;
-        }
         //System.exit(0);
     }
     

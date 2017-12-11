@@ -1,3 +1,6 @@
+/**
+ * @author: Christopher Morency
+ */
 
 public class GUIUpdate {
     UDPSender sender = new UDPSender();
@@ -24,8 +27,9 @@ public class GUIUpdate {
 	 * 
 	 * Return: Void
 	 */
-	public void setOutdoorTemp(String outdoorTemp){
-		sender.sendMessage("2" + outdoorTemp);
+	public void setOutdoorTemp(Weather weather){
+		sender.sendMessage("2" + weather.getTemperature());
+		sender.sendMessage("5" + weather.getWeatherConditions());
 	}
 	
 	/**
@@ -38,7 +42,32 @@ public class GUIUpdate {
 	 * Return: Void
 	 */
 	public void setNews(News news){
-		//TODO
+		sender.sendMessage("3" + news.getHeadline());
+		sender.sendMessage("4" + news.getContent());
+	}
+	
+	/**
+	 * Description:
+	 * Function which toggles the GUI background colour
+	 * 
+	 * Parameters: Void
+	 * 
+	 * Return: Void
+	 */
+	public void changeColour(){
+		sender.sendMessage("6");
+	}
+	
+	/**
+	 * Description:
+	 * Function which toggles the GUI background colour
+	 * 
+	 * Parameters: Void
+	 * 
+	 * Return: Void
+	 */
+	public void toggleAlarmMode(){
+		sender.sendMessage("7");
 	}
 	
 	/**
